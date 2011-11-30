@@ -2,6 +2,8 @@ package com.predic8.membrane.core;
 
 import java.io.File;
 
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.commons.logging.*;
 
 public class HotDeploymentThread extends Thread {
@@ -37,8 +39,13 @@ public class HotDeploymentThread extends Thread {
 
 				router.getTransport().closeAll();
 				router.getConfigurationManager().loadConfiguration(proxiesFile);
+				log.info(proxiesFile + " was reloaded.");
+			} catch (XMLStreamException e) {
+				log.error("Could not redeploy " + proxiesFile + ": " + e.getMessage());
+				lastModified = new File(proxiesFile).lastModified();
 			} catch (Exception e) {
-				log.warn("Could not redeploy " + proxiesFile, e);
+				log.error("Could not redeploy " + proxiesFile, e);
+				lastModified = new File(proxiesFile).lastModified();
 			}
 		}
 		log.debug("Hot Deployment Thread interrupted.");
