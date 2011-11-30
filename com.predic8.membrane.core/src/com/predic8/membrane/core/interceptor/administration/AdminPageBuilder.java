@@ -291,7 +291,7 @@ public class AdminPageBuilder extends Html {
 			thead();
 				tr();
 					createThs("Status Code", "Count", "Minimum Time", "Maximum Time", "Average Time", 
-							"Bytes Sent", "Bytes Received");
+							"Total Request Body Bytes", "Total Response Body Bytes");
 			    end();
 			end();
 			tbody();
@@ -350,7 +350,7 @@ public class AdminPageBuilder extends Html {
 			thead();
 				tr();
 					createThs("Name", "Count", "Minimum Time", "Maximum Time", "Average Time", 
-							"Bytes Sent", "Bytes Received");
+							"Total Request Body Bytes", "Total Response Body Bytes");
 			    end();
 			end();
 			tbody();
