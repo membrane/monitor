@@ -121,7 +121,7 @@ public class ClusterBalancerTest extends TestCase {
 	}
 
 	private Response getResponse() throws IOException {
-		Response res = new Response();
+		Response res = Response.ok().build();
 		res.setHeader(getHeader());
 		res.setBodyContent(getByteArrayData(getClass().getResourceAsStream(
 				"/getBankResponsewithSession.xml")));
