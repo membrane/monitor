@@ -104,7 +104,9 @@ public class LoadBalancingWithClusterManagerTest {
 		lb = new HttpRouter();
 		lbi.setRouter(lb);
 		cni.setRouter(lb);
-		lb.setClusterManager(new ClusterManager());
+		ClusterManager cm = new ClusterManager();
+		cm.addBalancer("Default");
+		lb.setClusterManager(cm);
 		lb.getRuleManager().addRuleIfNew(lbiRule);
 		lb.getRuleManager().addRuleIfNew(cniRule);
 	}

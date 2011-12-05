@@ -63,16 +63,19 @@ public class ClusterNotificationInterceptor extends AbstractInterceptor {
 			throws Exception {
 		if ("up".equals(m.group(1))) {
 			router.getClusterManager().up(
+					getBalancerParam(params),
 					getClusterParam(params),
 					params.get("host"), 
 					getPortParam(params));			
 		} else if ("down".equals(m.group(1))) {
 			router.getClusterManager().down(
+					getBalancerParam(params),
 					getClusterParam(params),
 					params.get("host"), 
 					getPortParam(params));			
 		} else {
 			router.getClusterManager().takeout(
+					getBalancerParam(params),
 					getClusterParam(params),
 					params.get("host"), 
 					getPortParam(params));			
@@ -96,6 +99,10 @@ public class ClusterNotificationInterceptor extends AbstractInterceptor {
 
 	private String getClusterParam(Map<String, String> params) throws Exception {
 		return params.get("cluster") == null ? "Default" : params.get("cluster");
+	}
+
+	private String getBalancerParam(Map<String, String> params) throws Exception {
+		return params.get("balancer") == null ? "Default" : params.get("balancer");
 	}
 
 	private Map<String, String> getParams(Exchange exc) throws Exception {

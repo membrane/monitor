@@ -253,6 +253,7 @@
 							</xsd:element>
 						</xsd:choice>						
 					</xsd:sequence>
+					<xsd:attribute name="name" type="xsd:string" />
 				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>

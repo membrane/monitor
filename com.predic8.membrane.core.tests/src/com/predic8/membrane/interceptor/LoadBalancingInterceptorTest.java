@@ -70,8 +70,9 @@ public class LoadBalancingInterceptorTest {
 		service2.getRuleManager().addRuleIfNew(sp2);
 
 		ClusterManager cm = new ClusterManager();
-		cm.up("Default", "localhost", 2000);
-		cm.up("Default", "localhost", 3000);
+		cm.addBalancer("Default");
+		cm.up("Default", "Default", "localhost", 2000);
+		cm.up("Default", "Default", "localhost", 3000);
 
 		balancer = new HttpRouter();
 		balancer.setClusterManager(cm);

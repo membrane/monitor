@@ -13,17 +13,23 @@
    limitations under the License. */
 package com.predic8.membrane.core.interceptor.balancer;
 
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
-import javax.xml.stream.*;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.commons.logging.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.config.AbstractXmlElement;
 import com.predic8.membrane.core.exchange.Exchange;
 import com.predic8.membrane.core.http.Message;
-import com.predic8.membrane.core.interceptor.*;
+import com.predic8.membrane.core.interceptor.AbstractInterceptor;
+import com.predic8.membrane.core.interceptor.Outcome;
 import com.predic8.membrane.core.util.HttpUtil;
 
 public class LoadBalancingInterceptor extends AbstractInterceptor {
@@ -31,16 +37,56 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 	private static Log log = LogFactory.getLog(LoadBalancingInterceptor.class
 			.getName());
 
-	// private List<Node> nodes = new LinkedList<Node>();
-
 	private DispatchingStrategy strategy = new RoundRobinStrategy();
 
 	private AbstractSessionIdExtractor sessionIdExtractor;
 
 	private boolean failOver = true;
+	
+	private String balancerName = "Default";
+	private boolean balancerCreated = true;
 
 	public LoadBalancingInterceptor() {
 		name = "Balancer";
+	}
+	
+	@Override
+	public void setRouter(Router router) {
+		super.setRouter(router);
+		createBalancer();
+	}
+	
+	/**
+	 * This is *NOT* {@link #setDisplayName(String)}, but the balancer's name set in the proxy configuration to identify this balancer.
+	 */
+	public void setName(String name) throws Exception {
+		balancerName = name;
+		balancerCreated = false;
+		
+		createBalancer();
+	}
+	
+	private void createBalancer() {
+		if (balancerCreated)
+			return;
+
+		if (router == null)
+			return;
+		
+		if (router.getClusterManager() == null) {
+			log.error("You have set useClusterManager=\"true\" on <router> in the bean configuration for the <balancer> to work.");
+			return;
+		}
+		
+		router.getClusterManager().addBalancer(balancerName);
+		balancerCreated = true;
+	}
+	
+	/**
+	 * This is *NOT* {@link #getDisplayName()}, but the balancer's name set in the proxy configuration to identify this balancer.
+	 */
+	public String getName() {
+		return balancerName;
 	}
 
 	@Override
@@ -84,7 +130,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 			String sessionId = getSessionId(exc.getResponse());
 
 			if (sessionId != null) {
-				router.getClusterManager().addSession2Cluster(sessionId,
+				router.getClusterManager().addSession2Cluster(balancerName, sessionId,
 						"Default", (Node) exc.getProperty("dispatchedNode"));
 			}
 		}
@@ -125,7 +171,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 		if (s == null || s.getNode().isDown()) {
 			log.debug("assigning new node for session id " + sessionId
 					+ (s != null ? " (old node was " + s.getNode() + ")" : ""));
-			router.getClusterManager().addSession2Cluster(sessionId, "Default",
+			router.getClusterManager().addSession2Cluster(balancerName, sessionId, "Default",
 					strategy.dispatch(this));
 		}
 		s = getSession(sessionId);
@@ -134,7 +180,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 	}
 
 	private Session getSession(String sessionId) {
-		return router.getClusterManager().getSessions("Default").get(sessionId);
+		return router.getClusterManager().getSessions(balancerName, "Default").get(sessionId);
 	}
 
 	public String getDestinationURL(Node ep, Exchange exc)
@@ -166,7 +212,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 	}
 
 	public List<Node> getEndpoints() {
-		return router.getClusterManager().getAvailableNodesByCluster("Default");
+		return router.getClusterManager().getAvailableNodesByCluster(balancerName, "Default");
 	}
 
 	public AbstractSessionIdExtractor getSessionIdExtractor() {
@@ -190,22 +236,32 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 	protected void writeInterceptor(XMLStreamWriter out)
 			throws XMLStreamException {
 
+		out.writeAttribute("name", balancerName);
 		out.writeStartElement("balancer");
 
 		if (sessionIdExtractor != null) {
 			sessionIdExtractor.write(out);
 		}
 
-		router.getClusterManager().write(out);
+		router.getClusterManager().getBalancerXMLElement(balancerName).write(out);
 
 		((AbstractXmlElement) strategy).write(out);
 
 		out.writeEndElement();
 	}
 
+	protected void parseAttributes(XMLStreamReader token) throws Exception {
+		if (token.getAttributeValue("", "name") != null)
+			setName(token.getAttributeValue("", "name"));
+		else
+			setName("Default");
+	}
+
+	
 	@Override
 	protected void parseChildren(XMLStreamReader token, String child)
 			throws Exception {
+		
 		if (token.getLocalName().equals("xmlSessionIdExtractor")) {
 			sessionIdExtractor = new XMLElementSessionIdExtractor();
 			sessionIdExtractor.parse(token);
@@ -213,7 +269,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 			sessionIdExtractor = new JSESSIONIDExtractor();
 			sessionIdExtractor.parse(token);
 		} else if (token.getLocalName().equals("clusters")) {
-			router.getClusterManager().parse(token);
+			router.getClusterManager().getBalancerXMLElement(balancerName).parse(token);
 		} else if (token.getLocalName().equals("byThreadStrategy")) {
 			parseByThreadStrategy(token);
 		} else if (token.getLocalName().equals("roundRobinStrategy")) {

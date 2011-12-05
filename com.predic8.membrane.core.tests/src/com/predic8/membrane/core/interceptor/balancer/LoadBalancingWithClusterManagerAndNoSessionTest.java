@@ -24,8 +24,9 @@ public class LoadBalancingWithClusterManagerAndNoSessionTest extends
 	public void setUp() throws Exception {
 		super.setUp();
 		ClusterManager cm = new ClusterManager();
-		cm.up("Default", "localhost", 2000);
-		cm.up("Default", "localhost", 3000);
+		cm.addBalancer("Default");
+		cm.up("Default", "Default", "localhost", 2000);
+		cm.up("Default", "Default", "localhost", 3000);
 		balancer.setClusterManager(cm);
 		balancingInterceptor.setRouter(balancer);
 	}

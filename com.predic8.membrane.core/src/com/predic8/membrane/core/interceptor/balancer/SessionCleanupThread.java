@@ -10,13 +10,13 @@ import org.apache.commons.logging.LogFactory;
 public class SessionCleanupThread extends Thread {
 	private static Log log = LogFactory.getLog(SessionCleanupThread.class.getName());
 	
-	Map<String, Cluster> clusters;
+	Map<String, Map<String, Cluster>> balancers;
 
 	private long sessionTimeout;
 	
-	public SessionCleanupThread(Map<String, Cluster> clusters, long sessionTimeout) {
+	public SessionCleanupThread(Map<String, Map<String, Cluster>> balancers, long sessionTimeout) {
 		super("SessionCleanupThread");
-		this.clusters = clusters;
+		this.balancers = balancers;
 		this.sessionTimeout = sessionTimeout;
 	}
 	
@@ -30,20 +30,21 @@ public class SessionCleanupThread extends Thread {
 		log.debug("SessionCleanupThread started");
 		
 		while (true) {
-			synchronized (clusters) {
+			synchronized (balancers) {
 				
 				log.debug("cleanup started");
 				
 				long time = System.currentTimeMillis();
 				int size = 0;
 				int cleaned = 0;
-				for (Cluster c : clusters.values()) {
-					synchronized (c.getSessions()) {
-						size = c.getSessions().size();
-						cleaned = cleanupSessions(c);									
+				for (Map<String, Cluster> m : balancers.values()) {
+					for (Cluster c : m.values()) {
+						synchronized (c.getSessions()) {
+							size = c.getSessions().size();
+							cleaned = cleanupSessions(c);									
+						}
 					}
 				}
-				
 				log.debug(""+ cleaned +" sessions removed of "+ size +" in " +(System.currentTimeMillis()-time)+"ms");
 			}
 			

@@ -29,7 +29,7 @@
 		</regExUrlRewriter>
 		<adminConsole />
 		<webServer docBase="docBase" />
-		<balancer>
+		<balancer name="The Balancer">
 			<xmlSessionIdExtractor namespace="http://chat.predic8.com/" localName="session" />
 			<!-- <clusters>
 				<cluster name="Default">

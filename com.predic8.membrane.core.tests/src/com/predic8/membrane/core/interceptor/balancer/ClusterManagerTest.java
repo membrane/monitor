@@ -20,40 +20,45 @@ import org.junit.Test;
 
 public class ClusterManagerTest extends TestCase {
 	
-	private ClusterManager cm = new ClusterManager();
+	private ClusterManager cm;
+	
+	public ClusterManagerTest() {
+		cm = new ClusterManager();
+		cm.addBalancer("Default");
+	}
 	
 	@Test
 	public void testAddEndpoint() throws Exception {
 
-		cm.up("c1", "localhost", 2000);
+		cm.up("Default", "c1", "localhost", 2000);
 		
-		assertEquals(1, cm.getAllNodesByCluster("c1").size());
-		assertEquals(true, cm.getAllNodesByCluster("c1").get(0).isUp());
-		assertEquals("localhost", cm.getAllNodesByCluster("c1").get(0).getHost());
-		assertEquals(2000, cm.getAllNodesByCluster("c1").get(0).getPort());
+		assertEquals(1, cm.getAllNodesByCluster("Default", "c1").size());
+		assertEquals(true, cm.getAllNodesByCluster("Default", "c1").get(0).isUp());
+		assertEquals("localhost", cm.getAllNodesByCluster("Default", "c1").get(0).getHost());
+		assertEquals(2000, cm.getAllNodesByCluster("Default", "c1").get(0).getPort());
 	}	
 
 	@Test
 	public void testDownEndpoint() throws Exception {
 
-		cm.down("c2", "localhost", 2000);
-		assertEquals(false, cm.getAllNodesByCluster("c2").get(0).isUp());
+		cm.down("Default", "c2", "localhost", 2000);
+		assertEquals(false, cm.getAllNodesByCluster("Default", "c2").get(0).isUp());
 	}	
 
 	@Test
 	public void testEmptyEndpoints() throws Exception {
 
-		assertEquals(0, cm.getAllNodesByCluster("c3").size());
+		assertEquals(0, cm.getAllNodesByCluster("Default", "c3").size());
 	}	
 	
 	@Test
 	public void testTimeout() throws Exception {
 
-		cm.up("c3", "localhost", 2000);
+		cm.up("Default", "c3", "localhost", 2000);
 		cm.setTimeout(2000);
-		assertEquals(1, cm.getAvailableNodesByCluster("c3").size());
+		assertEquals(1, cm.getAvailableNodesByCluster("Default", "c3").size());
 		Thread.sleep(3000);
-		assertEquals(0, cm.getAvailableNodesByCluster("c3").size());
+		assertEquals(0, cm.getAvailableNodesByCluster("Default", "c3").size());
 	}	
 	
 }

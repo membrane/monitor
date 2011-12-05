@@ -42,8 +42,9 @@ public class ClusterBalancerTest extends TestCase {
 		lb.setSessionIdExtractor(extracor);
 
 		cm = new ClusterManager();
-		cm.up("Default", "localhost", 2000);
-		cm.up("Default", "localhost", 3000);
+		cm.addBalancer("Default");
+		cm.up("Default", "Default", "localhost", 2000);
+		cm.up("Default", "Default", "localhost", 3000);
 		Router r = new HttpRouter();
 		r.setClusterManager(cm);
 		lb.setRouter(r);
@@ -56,7 +57,7 @@ public class ClusterBalancerTest extends TestCase {
 		lb.handleRequest(exc);
 		System.out.println("1");
 
-		Session s = cm.getSessions("Default").get("555555");
+		Session s = cm.getSessions("Default", "Default").get("555555");
 		assertEquals("localhost", s.getNode().getHost());
 
 		assertEquals(2, exc.getDestinations().size()); 
@@ -64,17 +65,17 @@ public class ClusterBalancerTest extends TestCase {
 		String stickyDestination = exc.getDestinations().get(0);
 		lb.handleRequest(exc);
 
-		assertEquals(1, cm.getSessions("Default").size());
+		assertEquals(1, cm.getSessions("Default", "Default").size());
 		assertEquals(stickyDestination, exc.getDestinations().get(0));
 
-		cm.takeout("Default", "localhost", s.getNode().getPort());
-		assertEquals(1, cm.getAvailableNodesByCluster("Default").size());
-		assertFalse(stickyDestination.equals(cm.getAvailableNodesByCluster("Default").get(0)));
+		cm.takeout("Default", "Default", "localhost", s.getNode().getPort());
+		assertEquals(1, cm.getAvailableNodesByCluster("Default", "Default").size());
+		assertFalse(stickyDestination.equals(cm.getAvailableNodesByCluster("Default", "Default").get(0)));
 		
 		lb.handleRequest(exc);
 		assertEquals(stickyDestination, exc.getDestinations().get(0));
 		
-		cm.down("Default", "localhost", s.getNode().getPort());
+		cm.down("Default", "Default", "localhost", s.getNode().getPort());
 		lb.handleRequest(exc);
 		
 		assertFalse(stickyDestination.equals(exc.getDestinations().get(0)));		
@@ -85,7 +86,7 @@ public class ClusterBalancerTest extends TestCase {
 		Exchange exc = getExchangeWithOutSession();
 
 		lb.handleRequest(exc);
-		assertNull(cm.getSessions("Default").get("444444"));
+		assertNull(cm.getSessions("Default", "Default").get("444444"));
 
 		Node stickyNode = (Node)exc.getProperty("dispatchedNode");
 		assertNotNull(stickyNode);
@@ -94,7 +95,7 @@ public class ClusterBalancerTest extends TestCase {
 
 		lb.handleResponse(exc);
 
-		assertEquals(stickyNode, cm.getSessions("Default").get("444444").getNode());
+		assertEquals(stickyNode, cm.getSessions("Default", "Default").get("444444").getNode());
 
 	}
 	
@@ -102,8 +103,8 @@ public class ClusterBalancerTest extends TestCase {
 	public void testNoNodeFound() throws Exception {
 		Exchange exc = getExchangeWithOutSession();
 
-		cm.down("Default", "localhost", 2000);
-		cm.down("Default", "localhost", 3000);
+		cm.down("Default", "Default", "localhost", 2000);
+		cm.down("Default", "Default", "localhost", 3000);
 
 		lb.handleRequest(exc);	
 		assertEquals(500, exc.getResponse().getStatusCode());
