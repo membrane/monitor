@@ -11,7 +11,7 @@ import com.predic8.membrane.core.rules.Rule;
 public class BalancerUtil {
 
 	public static List<Cluster> collectClusters(Router router) {
-		ArrayList<Cluster> result = new ArrayList<>();
+		ArrayList<Cluster> result = new ArrayList<Cluster>();
 		for (Rule r : router.getRuleManager().getRules())
 			for (Interceptor i : r.getInterceptors())
 				if (i instanceof LoadBalancingInterceptor)

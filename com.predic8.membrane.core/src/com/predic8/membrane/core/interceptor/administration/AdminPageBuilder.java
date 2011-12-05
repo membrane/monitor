@@ -215,7 +215,7 @@ public class AdminPageBuilder extends Html {
 			end();
 			if (BalancerUtil.hasLoadBalancing(router)) {
 				li().classAttr(getSelectedTabStyle(4, selected));
-					createLink("Loadbalancing", "balancers", null, null);
+					createLink("Load Balancing", "balancers", null, null);
 				end();
 			}
 			li().classAttr(getSelectedTabStyle(5, selected));

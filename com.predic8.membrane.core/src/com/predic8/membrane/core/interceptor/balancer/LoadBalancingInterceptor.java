@@ -30,7 +30,6 @@ import com.predic8.membrane.core.http.Message;
 import com.predic8.membrane.core.http.Response;
 import com.predic8.membrane.core.interceptor.AbstractInterceptor;
 import com.predic8.membrane.core.interceptor.Outcome;
-import com.predic8.membrane.core.util.HttpUtil;
 
 /**
  * May only be used as interceptor in a ServiceProxy.
