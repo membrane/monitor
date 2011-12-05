@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.predic8.membrane.core.HttpRouter;
 import com.predic8.membrane.core.http.Header;
 import com.predic8.membrane.core.http.MimeType;
-import com.predic8.membrane.core.interceptor.balancer.ClusterManager;
+import com.predic8.membrane.core.interceptor.balancer.BalancerUtil;
 import com.predic8.membrane.core.interceptor.balancer.DispatchingStrategy;
 import com.predic8.membrane.core.interceptor.balancer.LoadBalancingInterceptor;
 import com.predic8.membrane.core.interceptor.balancer.RoundRobinStrategy;
@@ -70,20 +70,17 @@ public class MultipleLoadBalancersTest {
 		service11 = new MockService(2011);
 		service12 = new MockService(2012);
 
-		ClusterManager cm = new ClusterManager();
-		cm.addBalancer("Default");
-		cm.up("Default", "Default", "localhost", service1.port);
-		cm.up("Default", "Default", "localhost", service2.port);
-		
-		cm.addBalancer("Balancer2");
-		cm.up("Balancer2", "Default", "localhost", service11.port);
-		cm.up("Balancer2", "Default", "localhost", service12.port);
-
 		balancer = new HttpRouter();
-		balancer.setClusterManager(cm);
 		
 		balancingInterceptor1 = createBalancingInterceptor(7000, "Default");
 		balancingInterceptor2 = createBalancingInterceptor(7001, "Balancer2");
+		
+		BalancerUtil.lookupBalancer(balancer, "Default").up("Default", "localhost", service1.port);
+		BalancerUtil.lookupBalancer(balancer, "Default").up("Default", "localhost", service2.port);
+		
+		BalancerUtil.lookupBalancer(balancer, "Balancer2").up("Default", "localhost", service11.port);
+		BalancerUtil.lookupBalancer(balancer, "Balancer2").up("Default", "localhost", service12.port);
+
 
 		roundRobinStrategy1 = new RoundRobinStrategy();
 		roundRobinStrategy2 = new RoundRobinStrategy();

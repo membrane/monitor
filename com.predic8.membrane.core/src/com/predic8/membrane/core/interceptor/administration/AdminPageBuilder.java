@@ -15,6 +15,7 @@ import com.googlecode.jatl.Html;
 import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.interceptor.Interceptor;
 import com.predic8.membrane.core.interceptor.balancer.Cluster;
+import com.predic8.membrane.core.interceptor.balancer.BalancerUtil;
 import com.predic8.membrane.core.interceptor.balancer.Node;
 import com.predic8.membrane.core.interceptor.balancer.Session;
 import com.predic8.membrane.core.rules.AbstractProxy;
@@ -212,7 +213,7 @@ public class AdminPageBuilder extends Html {
 			li().classAttr(getSelectedTabStyle(3, selected));
 				createLink("System", "system", null, null);
 			end();
-			if (router.getClusterManager() != null) {
+			if (BalancerUtil.hasLoadBalancing(router)) {
 				li().classAttr(getSelectedTabStyle(4, selected));
 					createLink("Loadbalancing", "balancers", null, null);
 				end();
@@ -234,16 +235,6 @@ public class AdminPageBuilder extends Html {
 		end();
 	}
 
-	protected void createAddBalancerForm() {
-		form().id("addBalancerForm").action("/admin/balancers/save").method("POST");
-			div()
-				.span().text("Name").end()
-				.span().input().type("text").id("name").name("name").classAttr("validate[required]").end(2) 
-				.span().input().value("Add Balancer").type("submit").classAttr("mb-button").end(2);
-			end();		  		
-		end();
-	}
-
 	protected void createBalancersTable()
 			throws UnsupportedEncodingException {
 		table().attr("cellpadding", "0", "cellspacing", "0", "border", "0", "class", "display");
@@ -253,7 +244,7 @@ public class AdminPageBuilder extends Html {
 			    end();
 			end();
 			tbody();
-				for (String s : router.getClusterManager().getBalancers()) {
+				for (String s : BalancerUtil.collectBalancers(router)) {
 					tr();
 						td();
 						createLink(s, "clusters", null, createQueryString("balancer", s));
@@ -273,14 +264,15 @@ public class AdminPageBuilder extends Html {
 			    end();
 			end();
 			tbody();
-				for (Cluster c : router.getClusterManager().getClusters(balancerName)) {
+				for (Cluster c : BalancerUtil.lookupBalancer(router, balancerName).getClusters()) {
 					tr();
 						td();
 						createLink(c.getName(), "clusters", "show", createQueryString("balancer", balancerName, "cluster", c.getName()));
 						end();
 						
-						createTds(String.valueOf(router.getClusterManager().getAllNodesByCluster(balancerName, c.getName()).size()), 
-								  getFormatedHealth(balancerName, c.getName()));
+						createTds(String.valueOf(BalancerUtil.lookupBalancer(router, balancerName).
+								getAllNodesByCluster(c.getName()).size()), 
+								getFormatedHealth(balancerName, c.getName()));
 					end();
 				}
 			end();
@@ -381,7 +373,7 @@ public class AdminPageBuilder extends Html {
 			    end();
 			end();
 			tbody();
-				for (Node n : router.getClusterManager().getAllNodesByCluster(balancerName, params.get("cluster"))) {
+				for (Node n : BalancerUtil.lookupBalancer(router, balancerName).getAllNodesByCluster(params.get("cluster"))) {
 					tr();
 						td();
 						createLink(""+n.getHost()+":"+n.getPort(), "node", "show", 
@@ -390,7 +382,7 @@ public class AdminPageBuilder extends Html {
 						createTds( getStatusString(n), ""+n.getCounter(), 
 								   String.format("%1$.2f%%", n.getErrors()*100),
 								   formatDurationHMS(System.currentTimeMillis()-n.getLastUpTime()),
-								   ""+router.getClusterManager().getSessionsByNode(balancerName, params.get("cluster"),n).size(),
+								   ""+BalancerUtil.lookupBalancer(router, balancerName).getSessionsByNode(params.get("cluster"),n).size(),
 						           ""+n.getThreads());
 						td();
 							createIcon("ui-icon-eject", "node", "takeout", "takeout", createQuery4Node(n));
@@ -421,10 +413,11 @@ public class AdminPageBuilder extends Html {
 		a().href(createHRef(ctrl, action, query)).span().classAttr("ui-icon "+icon).style("float:left;").title(tooltip).end(2);
 	}
 
-	private String getFormatedHealth(String balancer, String cluster) {
-		return String.format("%d up/ %d down", router.getClusterManager().getAvailableNodesByCluster(balancer, cluster).size(),
-											   router.getClusterManager().getAllNodesByCluster(balancer, cluster).size() - 
-											   router.getClusterManager().getAvailableNodesByCluster(balancer, cluster).size());
+	private String getFormatedHealth(String balancerName, String cluster) {
+		return String.format("%d up/ %d down", 
+				BalancerUtil.lookupBalancer(router, balancerName).getAvailableNodesByCluster(cluster).size(),
+				BalancerUtil.lookupBalancer(router, balancerName).getAllNodesByCluster(cluster).size() - 
+				BalancerUtil.lookupBalancer(router, balancerName).getAvailableNodesByCluster(cluster).size());
 	}
 
 	private String getSelectedTabStyle(int ownPos, int selected) {

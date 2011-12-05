@@ -29,6 +29,9 @@ public class BalancerInterceptorParser extends AbstractParser {
 			builder.addPropertyValue("name", e.getAttribute("name"));
 		else
 			builder.addPropertyValue("name", "Default");
+		
+		if (e.hasAttribute("sessionTimeout"))
+			builder.addPropertyValue("sessionTimeout", e.getAttribute("sessionTimeout"));
 
 		parseChildren(builder, e);
 	}
