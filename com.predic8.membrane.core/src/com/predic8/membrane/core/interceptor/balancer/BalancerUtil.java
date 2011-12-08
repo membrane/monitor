@@ -19,12 +19,12 @@ public class BalancerUtil {
 		return result;
 	}
 
-	public static List<String> collectBalancers(Router router) {
-		ArrayList<String> result = new ArrayList<String>();
+	public static List<LoadBalancingInterceptor> collectBalancers(Router router) {
+		ArrayList<LoadBalancingInterceptor> result = new ArrayList<LoadBalancingInterceptor>();
 		for (Rule r : router.getRuleManager().getRules())
 			for (Interceptor i : r.getInterceptors())
 				if (i instanceof LoadBalancingInterceptor)
-					result.add(((LoadBalancingInterceptor)i).getName());
+					result.add((LoadBalancingInterceptor)i);
 		return result;
 	}
 
@@ -36,7 +36,16 @@ public class BalancerUtil {
 						return ((LoadBalancingInterceptor) i).getClusterManager();
 		throw new RuntimeException("balancer with name \"" + name + "\" not found.");
 	}
-	
+
+	public static LoadBalancingInterceptor lookupBalancerInterceptor(Router router, String name) {
+		for (Rule r : router.getRuleManager().getRules())
+			for (Interceptor i : r.getInterceptors())
+				if (i instanceof LoadBalancingInterceptor)
+					if (((LoadBalancingInterceptor)i).getName().equals(name))
+						return (LoadBalancingInterceptor) i;
+		throw new RuntimeException("balancer with name \"" + name + "\" not found.");
+	}
+
 	public static boolean hasLoadBalancing(Router router) {
 		for (Rule r : router.getRuleManager().getRules())
 			for (Interceptor i : r.getInterceptors())

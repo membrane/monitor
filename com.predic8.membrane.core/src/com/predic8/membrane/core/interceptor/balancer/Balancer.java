@@ -16,15 +16,16 @@ import com.predic8.membrane.core.config.AbstractXmlElement;
 import com.predic8.membrane.core.config.GenericComplexElement;
 
 public class Balancer extends AbstractXmlElement {
+	public static final String DEFAULT_NAME = "Default";
 	private static Log log = LogFactory.getLog(Balancer.class.getName());
 
 	private final Map<String, Cluster> clusters = new Hashtable<String, Cluster>();
-	private String name = "Default";
+	private String name = DEFAULT_NAME;
 	private long timeout = 0;
 	private SessionCleanupThread sct;
 
 	public Balancer() {
-		addCluster("Default");
+		addCluster(Cluster.DEFAULT_NAME);
 		sct = new SessionCleanupThread(clusters);
 		sct.start();
 	}

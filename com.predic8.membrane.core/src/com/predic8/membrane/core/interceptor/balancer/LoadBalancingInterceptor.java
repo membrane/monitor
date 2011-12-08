@@ -14,7 +14,6 @@
 package com.predic8.membrane.core.interceptor.balancer;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
@@ -66,10 +65,10 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 
 		exc.setProperty("dispatchedNode", dispatchedNode);
 
-		exc.setOriginalRequestUri(getDestinationURL(dispatchedNode, exc));
+		exc.setOriginalRequestUri(dispatchedNode.getDestinationURL(exc));
 
 		exc.getDestinations().clear();
-		exc.getDestinations().add(getDestinationURL(dispatchedNode, exc));
+		exc.getDestinations().add(dispatchedNode.getDestinationURL(exc));
 
 		setFailOverNodes(exc, dispatchedNode);
 
@@ -84,7 +83,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 			String sessionId = getSessionId(exc.getResponse());
 
 			if (sessionId != null) {
-				balancer.addSession2Cluster(sessionId, "Default", (Node) exc.getProperty("dispatchedNode"));
+				balancer.addSession2Cluster(sessionId, Cluster.DEFAULT_NAME, (Node) exc.getProperty("dispatchedNode"));
 			}
 		}
 
@@ -100,16 +99,16 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 
 		for (Node ep : getEndpoints()) {
 			if (!ep.equals(dispatchedNode))
-				exc.getDestinations().add(getDestinationURL(ep, exc));
+				exc.getDestinations().add(ep.getDestinationURL(exc));
 		}
 	}
 
 	private void updateDispatchedNode(Exchange exc) {
 		Node n = (Node) exc.getProperty("dispatchedNode");
 		n.removeThread();
-		// exc.timeReqSent will be overridden later as exc really
+		// exc.timeResSent will be overridden later as exc really
 		// completes, but to collect the statistics we use the current time
-		exc.setTimeReqSent(System.currentTimeMillis());
+		exc.setTimeResSent(System.currentTimeMillis());
 		n.collectStatisticsFrom(exc);
 	}
 
@@ -127,7 +126,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 		if (s == null || s.getNode().isDown()) {
 			log.debug("assigning new node for session id " + sessionId
 					+ (s != null ? " (old node was " + s.getNode() + ")" : ""));
-			balancer.addSession2Cluster(sessionId, "Default", strategy.dispatch(this));
+			balancer.addSession2Cluster(sessionId, Cluster.DEFAULT_NAME, strategy.dispatch(this));
 		}
 		s = getSession(sessionId);
 		s.used();
@@ -135,25 +134,11 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 	}
 
 	private Session getSession(String sessionId) {
-		return balancer.getSessions("Default").get(sessionId);
-	}
-
-	public String getDestinationURL(Node ep, Exchange exc)
-			throws MalformedURLException {
-		return "http://" + ep.getHost() + ":" + ep.getPort()
-				+ getRequestURI(exc);
+		return balancer.getSessions(Cluster.DEFAULT_NAME).get(sessionId);
 	}
 
 	private String getSessionId(Message msg) throws Exception {
 		return sessionIdExtractor.getSessionId(msg);
-	}
-
-	private String getRequestURI(Exchange exc) throws MalformedURLException {
-		if (exc.getOriginalRequestUri().toLowerCase().startsWith("http://")) 
-			// TODO what about HTTPS?
-			return new URL(exc.getOriginalRequestUri()).getFile();
-
-		return exc.getOriginalRequestUri();
 	}
 
 	/**
@@ -182,7 +167,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 	}
 
 	public List<Node> getEndpoints() {
-		return balancer.getAvailableNodesByCluster("Default");
+		return balancer.getAvailableNodesByCluster(Cluster.DEFAULT_NAME);
 	}
 
 	public AbstractSessionIdExtractor getSessionIdExtractor() {
@@ -239,7 +224,7 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 		if (token.getAttributeValue("", "name") != null)
 			setName(token.getAttributeValue("", "name"));
 		else
-			setName("Default");
+			setName(Balancer.DEFAULT_NAME);
 		if (token.getAttributeValue("", "sessionTimeout") != null)
 			setSessionTimeout(Integer.parseInt(token.getAttributeValue("", "sessionTimeout")));
 	}

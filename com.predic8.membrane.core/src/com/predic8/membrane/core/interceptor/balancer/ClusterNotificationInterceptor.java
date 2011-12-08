@@ -108,11 +108,11 @@ public class ClusterNotificationInterceptor extends AbstractInterceptor {
 	}
 
 	private String getClusterParam(Map<String, String> params) throws Exception {
-		return params.get("cluster") == null ? "Default" : params.get("cluster");
+		return params.get("cluster") == null ? Cluster.DEFAULT_NAME : params.get("cluster");
 	}
 
 	private String getBalancerParam(Map<String, String> params) throws Exception {
-		return params.get("balancer") == null ? "Default" : params.get("balancer");
+		return params.get("balancer") == null ? Balancer.DEFAULT_NAME : params.get("balancer");
 	}
 
 	private Map<String, String> getParams(Exchange exc) throws Exception {

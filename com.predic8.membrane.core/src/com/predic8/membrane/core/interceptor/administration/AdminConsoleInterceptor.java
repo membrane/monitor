@@ -30,6 +30,7 @@ import com.predic8.membrane.core.exchange.Exchange;
 import com.predic8.membrane.core.http.Header;
 import com.predic8.membrane.core.http.Response;
 import com.predic8.membrane.core.interceptor.*;
+import com.predic8.membrane.core.interceptor.balancer.Balancer;
 import com.predic8.membrane.core.interceptor.balancer.BalancerUtil;
 import com.predic8.membrane.core.interceptor.balancer.Node;
 import com.predic8.membrane.core.rules.*;
@@ -450,7 +451,11 @@ public class AdminConsoleInterceptor extends AbstractInterceptor {
 				h1().text("Balancer " + balancer).end();
 				h2().text("Clusters").end();
 				createClustersTable(balancer);
-				createAddClusterForm(balancer);				
+				createAddClusterForm(balancer);
+				p();
+					text("Failover: ");
+					text(BalancerUtil.lookupBalancerInterceptor(router, balancer).isFailOver() ? "yes" : "no");
+				end();
 			}
 		
 		}.createPage();
@@ -547,7 +552,7 @@ public class AdminConsoleInterceptor extends AbstractInterceptor {
 	public static String getBalancerParam(Map<String, String> params) {
 		String balancerName = params.get("balancer");
 		if (balancerName == null)
-			balancerName = "Default";
+			balancerName = Balancer.DEFAULT_NAME;
 		return balancerName;
 	}
 

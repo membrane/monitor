@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.predic8.membrane.core.interceptor.balancer.Balancer;
 import com.predic8.membrane.core.interceptor.balancer.ByThreadStrategy;
 import com.predic8.membrane.core.interceptor.balancer.JSESSIONIDExtractor;
 import com.predic8.membrane.core.interceptor.balancer.LoadBalancingInterceptor;
@@ -28,7 +29,7 @@ public class BalancerInterceptorParser extends AbstractParser {
 		if (e.hasAttribute("name")) 
 			builder.addPropertyValue("name", e.getAttribute("name"));
 		else
-			builder.addPropertyValue("name", "Default");
+			builder.addPropertyValue("name", Balancer.DEFAULT_NAME);
 		
 		if (e.hasAttribute("sessionTimeout"))
 			builder.addPropertyValue("sessionTimeout", e.getAttribute("sessionTimeout"));

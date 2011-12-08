@@ -14,8 +14,10 @@ import java.util.TreeMap;
 import com.googlecode.jatl.Html;
 import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.interceptor.Interceptor;
+import com.predic8.membrane.core.interceptor.balancer.Balancer;
 import com.predic8.membrane.core.interceptor.balancer.Cluster;
 import com.predic8.membrane.core.interceptor.balancer.BalancerUtil;
+import com.predic8.membrane.core.interceptor.balancer.LoadBalancingInterceptor;
 import com.predic8.membrane.core.interceptor.balancer.Node;
 import com.predic8.membrane.core.interceptor.balancer.Session;
 import com.predic8.membrane.core.rules.AbstractProxy;
@@ -240,15 +242,19 @@ public class AdminPageBuilder extends Html {
 		table().attr("cellpadding", "0", "cellspacing", "0", "border", "0", "class", "display");
 			thead();
 				tr();
-					createThs("Name");
+					createThs("Name", "Failover", "Health");
 			    end();
 			end();
 			tbody();
-				for (String s : BalancerUtil.collectBalancers(router)) {
+				for (LoadBalancingInterceptor loadBalancingInterceptor : BalancerUtil.collectBalancers(router)) {
 					tr();
 						td();
-						createLink(s, "clusters", null, createQueryString("balancer", s));
+						createLink(loadBalancingInterceptor.getName(), "clusters", null, createQueryString("balancer", loadBalancingInterceptor.getName()));
 						end();
+						createTds(
+								loadBalancingInterceptor.isFailOver() ? "yes" : "no",
+								getFormatedHealth(loadBalancingInterceptor.getName()));
+
 					end();
 				}
 			end();
@@ -418,6 +424,16 @@ public class AdminPageBuilder extends Html {
 				BalancerUtil.lookupBalancer(router, balancerName).getAvailableNodesByCluster(cluster).size(),
 				BalancerUtil.lookupBalancer(router, balancerName).getAllNodesByCluster(cluster).size() - 
 				BalancerUtil.lookupBalancer(router, balancerName).getAvailableNodesByCluster(cluster).size());
+	}
+
+	private String getFormatedHealth(String balancerName) {
+		Balancer balancer = BalancerUtil.lookupBalancer(router, balancerName);
+		int available = 0, all = 0;
+		for (Cluster c : balancer.getClusters()) {
+			all += balancer.getAllNodesByCluster(c.getName()).size();
+			available += balancer.getAvailableNodesByCluster(c.getName()).size();
+		}
+		return String.format("%d up/ %d down", available, all - available);
 	}
 
 	private String getSelectedTabStyle(int ownPos, int selected) {
