@@ -18,6 +18,7 @@ import org.apache.commons.logging.*;
 
 import com.predic8.membrane.core.TerminateException;
 import com.predic8.membrane.core.http.*;
+import com.predic8.membrane.core.interceptor.balancer.Node;
 import com.predic8.membrane.core.rules.ServiceProxyKey;
 import com.predic8.membrane.core.transport.http.*;
 

@@ -97,7 +97,15 @@ public class AdminConsoleInterceptor extends AbstractInterceptor {
 				h2().text("Status Codes").end();
 				createStatusCodesTable(rule.getStatisticsByStatusCodes());
 				h2().text("Configuration").end();
-				pre().text(TextUtil.formatXML(new StringReader(rule.toXml()))).end();
+				String xml = "";
+				try {
+					xml = rule.toXml();
+					xml = TextUtil.formatXML(new StringReader(xml));
+					pre().text(xml).end();
+				} catch (Exception e) {
+					log.error(xml);
+					log.error(e);
+				}
 			}
 		}.createPage());
 	}
@@ -257,9 +265,11 @@ public class AdminConsoleInterceptor extends AbstractInterceptor {
 		
 			@Override
 			protected void createTabContent() throws Exception {
-				h2().text("Node " + params.get("host")+":"+params.get("port")).end();
+				String balancer = getBalancerParam(params);
+				h2().text("Node " + params.get("host")+":"+params.get("port") + " (" +
+						"Cluster " + params.get("cluster") + " of Balancer " + balancer + ")").end();
 				h3().text("Status Codes").end();
-				Node n = BalancerUtil.lookupBalancer(router, getBalancerParam(params)).getNode(
+				Node n = BalancerUtil.lookupBalancer(router, balancer).getNode(
 						params.get("cluster"),
 						params.get("host"),
 						Integer.parseInt(params.get("port")));
@@ -268,10 +278,10 @@ public class AdminConsoleInterceptor extends AbstractInterceptor {
 				p().text("Current threads: " + n.getThreads()).end();
 				p().text("Requests without responses: " + n.getLost()).end();
 				span().classAttr("mb-button");
-					createLink("Reset Counter", "node", "reset", createQueryString("balancer", getBalancerParam(params), "cluster",params.get("cluster"),"host",n.getHost(),"port", ""+n.getPort()));
+					createLink("Reset Counter", "node", "reset", createQueryString("balancer", balancer, "cluster",params.get("cluster"),"host",n.getHost(),"port", ""+n.getPort()));
 				end();
 				span().classAttr("mb-button");
-					createLink("Show Sessions", "node", "sessions", createQueryString("balancer", getBalancerParam(params), "cluster",params.get("cluster"),"host",n.getHost(),"port", ""+n.getPort()));
+					createLink("Show Sessions", "node", "sessions", createQueryString("balancer", balancer, "cluster",params.get("cluster"),"host",n.getHost(),"port", ""+n.getPort()));
 				end();
 			}
 		}.createPage());
@@ -415,9 +425,10 @@ public class AdminConsoleInterceptor extends AbstractInterceptor {
 		
 			@Override
 			protected void createTabContent() throws Exception {
-				h1().text("Cluster " + params.get("cluster")).end();
-				createNodesTable(getBalancerParam(params));
-				createAddNodeForm(getBalancerParam(params));				
+				String balancer = getBalancerParam(params);
+				h2().text("Cluster " + params.get("cluster") + " of Balancer " + balancer).end();
+				createNodesTable(balancer);
+				createAddNodeForm(balancer);				
 			}
 		
 		}.createPage();
@@ -435,9 +446,11 @@ public class AdminConsoleInterceptor extends AbstractInterceptor {
 		
 			@Override
 			protected void createTabContent() throws Exception {
-				h1().text("Clusters").end();
-				createClustersTable(getBalancerParam(params));
-				createAddClusterForm(getBalancerParam(params));				
+				String balancer = getBalancerParam(params);
+				h1().text("Balancer " + balancer).end();
+				h2().text("Clusters").end();
+				createClustersTable(balancer);
+				createAddClusterForm(balancer);				
 			}
 		
 		}.createPage();

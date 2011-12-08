@@ -107,6 +107,9 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 	private void updateDispatchedNode(Exchange exc) {
 		Node n = (Node) exc.getProperty("dispatchedNode");
 		n.removeThread();
+		// exc.timeReqSent will be overridden later as exc really
+		// completes, but to collect the statistics we use the current time
+		exc.setTimeReqSent(System.currentTimeMillis());
 		n.collectStatisticsFrom(exc);
 	}
 
@@ -215,10 +218,11 @@ public class LoadBalancingInterceptor extends AbstractInterceptor {
 	protected void writeInterceptor(XMLStreamWriter out)
 			throws XMLStreamException {
 
+		out.writeStartElement("balancer");
+
 		out.writeAttribute("name", balancer.getName());
 		if (getSessionTimeout() != SessionCleanupThread.DEFAULT_TIMEOUT)
 			out.writeAttribute("sessionTimeout", ""+getSessionTimeout());
-		out.writeStartElement("balancer");
 
 		if (sessionIdExtractor != null) {
 			sessionIdExtractor.write(out);
