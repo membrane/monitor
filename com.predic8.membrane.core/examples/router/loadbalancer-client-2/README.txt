@@ -77,4 +77,4 @@ To run the example execute the following steps:
 
     http://localhost:9000/admin/clusters/show?cluster=Default
 
-21. Login with alice/admin and notice the node you created.
+21. Login with admin/admin and notice the node you created.
