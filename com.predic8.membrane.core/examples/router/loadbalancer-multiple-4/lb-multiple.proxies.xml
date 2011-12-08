@@ -4,7 +4,7 @@
 	<serviceProxy name="Balancer 1" port="8080">
 		<balancer name="balancer1">
 			<clusters>
-				<cluster name="Default">
+				<cluster>
 					<node host="localhost" port="4000"/>
 					<node host="localhost" port="4001"/>
 				</cluster>
@@ -14,8 +14,9 @@
 	<serviceProxy name="Balancer 2" port="8081">
 		<balancer name="balancer2">
 			<clusters>
-				<cluster name="Default">
+				<cluster>
 					<node host="localhost" port="4002"/>
+					<node host="localhost" port="4003"/>
 				</cluster>
 			</clusters>
 		</balancer>
@@ -31,6 +32,9 @@
 	</serviceProxy>
 	<serviceProxy name="Mock Node 3" port="4002">
 		<counter name="Mock Node 3" />
+	</serviceProxy>
+	<serviceProxy name="Mock Node 4" port="4003">
+		<counter name="Mock Node 4" />
 	</serviceProxy>
 	<serviceProxy name="Administration" port="9000">
 		<adminConsole />

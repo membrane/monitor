@@ -29,8 +29,8 @@ To run the example execute the following steps:
 3. Open the URL http://localhost:8080/ in your browser and repeatedly refresh (F5). Observe that the response alternates
    between Mock Node 1 and 2.
    
-4. Open the URL http://localhost:8081/ and refresh. Observe that you stay on Mock Node 3.
-   (Since on the second LB only this one node is configured.)
+4. Open the URL http://localhost:8081/ and refresh serveral times. Observe that you now alternate between Mock Node 3
+   and Mock Node 4.
 
 5. Open the URL http://localhost:9000/admin/
 

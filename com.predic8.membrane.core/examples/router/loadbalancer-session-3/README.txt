@@ -14,6 +14,16 @@ will be used for the following 10 requests.
 
 To run the example execute the following steps:
 
+0. Setup
+   Download the JAX-WS reference implementation from http://jax-ws.java.net/ and unpack it (lets say to
+   C:\work\JAXWS2.2.5-20110729 ). Download Apache Ant from http://ant.apache.org/bindownload.cgi and unpack it (lets
+   say to C:\work\apache-ant-1.8.2-bin . Let us also say your Java resides in C:\Program Files\Java\jdk1.7.0_01 . 
+
+   Execute the following commands:
+     set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_01
+     set JAXWS_HOME=C:\work\JAXWS2.2.5-20110729\jaxws-ri\bin
+     set PATH=%PATH%;C:\work\apache-ant-1.8.2-bin\bin;C:\work\JAXWS2.2.5-20110729\jaxws-ri\bin
+
 1. Go to the examples/loadbalancer-session-3 directory.
 
 2. Execute
@@ -29,7 +39,7 @@ To run the example execute the following steps:
 
 4. Open the URL http://localhost:9000/admin/
 
-5. Click on the "Load Balancing" tab.
+5. Click on the "Load Balancing" tab. Click on "Default", and on the next page again on "Default".
 
 6. Nodes are identified by host name and port. Fill in the formular with "localhost" as host and 4000 as port and press
    "Add Node".
