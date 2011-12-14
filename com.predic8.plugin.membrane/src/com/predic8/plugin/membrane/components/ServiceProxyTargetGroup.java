@@ -19,14 +19,11 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 
 import com.predic8.membrane.core.Router;
 import com.predic8.plugin.membrane.listeners.PortVerifyListener;
+import com.predic8.plugin.membrane.util.SWTUtil;
 
 public class ServiceProxyTargetGroup {
 
@@ -107,10 +104,9 @@ public class ServiceProxyTargetGroup {
 
 	private Group createGroup(Composite parent, int style) {
 		Group group = new Group(parent, style);
+		group.setText("Target");
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 4;
-		group.setLayout(layout);
+		group.setLayout(SWTUtil.createGridLayout(4, 5));
 		return group;
 	}
 
