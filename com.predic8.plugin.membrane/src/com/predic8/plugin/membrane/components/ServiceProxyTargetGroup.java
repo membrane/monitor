@@ -44,6 +44,12 @@ public class ServiceProxyTargetGroup {
 	public ServiceProxyTargetGroup(Composite parent, int style) {
 		Group group = createGroup(parent, style);
 
+		
+		Label label = createSpanLabel(group);
+		label.setText("Membrane Monitor will forward the messages to the host on the specified port");
+		
+		createSpanLabel(group).setText(" ");
+		
 		new Label(group, SWT.NONE).setText("Host");
 
 		textTargetHost = createTargetHostText(group);
@@ -61,6 +67,15 @@ public class ServiceProxyTargetGroup {
 		
 	}
 
+	private Label createSpanLabel(Composite parent) {
+		Label label = new Label(parent, SWT.NONE);
+		GridData gData = SWTUtil.getGreedyHorizontalGridData();
+		gData.horizontalSpan = 4;
+		gData.verticalSpan = 2;
+		label.setLayoutData(gData);
+		return label;
+	}
+	
 	private Text createTargetHostText(Group group) {
 		Text text = new Text(group, SWT.BORDER);
 		text.setText(Router.getInstance().getRuleManager().getDefaultTargetHost());
