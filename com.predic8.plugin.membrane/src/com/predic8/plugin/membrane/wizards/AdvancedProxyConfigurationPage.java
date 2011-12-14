@@ -51,10 +51,10 @@ public class AdvancedProxyConfigurationPage extends SecurityWizardPage {
 	
 	@Override
 	protected void addListenersToSecureConnectionButton() {
-		btSecureConnection.addSelectionListener(new SelectionAdapter() {
+		getSecurityGroup().getSecureConnectionButton().addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (btSecureConnection.getSelection())
+				if (getSecurityGroup().getSecureConnectionButton().getSelection())
 					ruleKeyGroup.getTextListenPort().setText("443");
 			}
 		});

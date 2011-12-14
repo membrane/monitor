@@ -66,8 +66,8 @@ public class AddProxyWizard extends Wizard {
 		rule.setTargetHost(targetHostConfigPage.getTargetHost());
 		rule.setTargetPort(Integer.parseInt(targetHostConfigPage.getTargetPort()));
 		rule.setKey(ruleKey);
-		rule.setInboundTLS(advancedProxyConfigPage.getSecureConnection());
-		rule.setOutboundTLS(targetHostConfigPage.getSecureConnection());
+		rule.setInboundTLS(advancedProxyConfigPage.getSecurityGroup().getSecureConnection());
+		rule.setOutboundTLS(targetHostConfigPage.getSecurityGroup().getSecureConnection());
 		
 		getRuleManager().addRuleIfNew(rule);
 	}

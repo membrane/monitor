@@ -31,7 +31,7 @@ public abstract class SecurityTabComposite extends AbstractProxyFeatureComposite
 		createSecureConnectionButton(composite);
 		
 		Label label = new Label(composite, SWT.NONE);
-		label.setText("To enable secure connection you must provide keystore and truststore data.");
+		label.setText("To enable secure connections you must provide a keystore at the");
 	
 		createLink(composite, "<A>Security Preferences Page</A>");
 		
@@ -40,7 +40,7 @@ public abstract class SecurityTabComposite extends AbstractProxyFeatureComposite
 	
 	protected void createSecureConnectionButton(Composite parent) {
 		btSecureConnection = new Button(parent, SWT.CHECK);
-		btSecureConnection.setText("Secure Connection (SSL/TLS)");
+		btSecureConnection.setText("Secure Connections (SSL/TLS)");
 		btSecureConnection.setEnabled(Router.getInstance().getConfigurationManager().getProxies().isKeyStoreAvailable());
 		btSecureConnection.addSelectionListener(new SelectionAdapter() {
 			@Override
