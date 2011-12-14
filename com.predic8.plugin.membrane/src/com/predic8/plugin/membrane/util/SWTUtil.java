@@ -26,6 +26,13 @@ public class SWTUtil {
 		return gData;
 	}
 	
+	public static GridData getGreedyHorizontalGridData() {
+		GridData gData = new GridData();
+		gData.horizontalAlignment = GridData.FILL;
+		gData.grabExcessHorizontalSpace = true;
+		return gData;
+	}
+	
 	public static GridLayout createGridLayout(int col, int margin, int vSpacing) {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = col;

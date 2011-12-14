@@ -24,6 +24,7 @@ import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.rules.ServiceProxyKey;
 import com.predic8.membrane.core.rules.RuleKey;
 import com.predic8.plugin.membrane.listeners.PortVerifyListener;
+import com.predic8.plugin.membrane.util.SWTUtil;
 
 public class RuleKeyGroup {
 
@@ -106,8 +107,6 @@ public class RuleKeyGroup {
 		Label lbRefExpressExampleEmpty = new Label(compPattern, SWT.NONE);
 		lbRefExpressExampleEmpty.setLayoutData(gridData4LbExample);
 		lbRefExpressExampleEmpty.setText(".*FooService   matches any URI terminating with FooService");
-
-		//new Label(compPattern, SWT.NONE).setText(".*FooService   matches any URI terminating with FooService");
 
 	}
 
@@ -289,12 +288,9 @@ public class RuleKeyGroup {
 
 	private Group createKeyGroupe(Composite parent) {
 		Group group = new Group(parent, SWT.NONE);
-		
+		group.setText("Service Proxy Key");
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
-
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		group.setLayout(layout);
+		group.setLayout(SWTUtil.createGridLayout(2, 5));
 		return group;
 	}
 

@@ -42,7 +42,7 @@ public class AdvancedProxyConfigurationPage extends SecurityWizardPage {
 	public void createControl(Composite parent) {
 		Composite composite = createComposite(parent, 1);
 		
-		createSecurityComposite(composite);
+		createSecurityGroup(composite);
 		
 		ruleKeyGroup = new RuleKeyGroup(composite, SWT.NONE);
 		
