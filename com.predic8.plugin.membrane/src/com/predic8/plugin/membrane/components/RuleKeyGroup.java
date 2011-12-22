@@ -357,33 +357,26 @@ public class RuleKeyGroup {
 		if (ruleKey.isUsePathPattern()) {
 			btPathPattern.setSelection(true);
 			btAnyPath.setSelection(false);
-			btPathPattern.notifyListeners(SWT.Selection, createSelectionEvent(SELECTION_INPUT_CHANGED));
+			btPathPattern.notifyListeners(SWT.Selection, SWTUtil.createSelectionEvent(SELECTION_INPUT_CHANGED, btPathPattern));
 			if (ruleKey.isPathRegExp()) {
 				btRegExp.setSelection(true);
-				btRegExp.notifyListeners(SWT.Selection, createSelectionEvent(SELECTION_INPUT_CHANGED));
+				btRegExp.notifyListeners(SWT.Selection, SWTUtil.createSelectionEvent(SELECTION_INPUT_CHANGED, btRegExp));
 				btSubstring.setSelection(false);
 			} else {
 				btSubstring.setSelection(true);
-				btSubstring.notifyListeners(SWT.Selection, createSelectionEvent(SELECTION_INPUT_CHANGED));
+				btSubstring.notifyListeners(SWT.Selection, SWTUtil.createSelectionEvent(SELECTION_INPUT_CHANGED, btSubstring));
 				btRegExp.setSelection(false);
 			}
 			textRulePath.setText(ruleKey.getPath());
 		} else {
 			btAnyPath.setSelection(true);
-			btAnyPath.notifyListeners(SWT.Selection, createSelectionEvent(SELECTION_INPUT_CHANGED));
+			btAnyPath.notifyListeners(SWT.Selection, SWTUtil.createSelectionEvent(SELECTION_INPUT_CHANGED, btAnyPath));
 			btPathPattern.setSelection(false);
 		}
 
 		textRuleHost.setText(ruleKey.getHost());
 	}
 
-	protected Event createSelectionEvent(Object data) {
-		Event event = new Event();
-		event.type = SWT.Selection;
-		event.data = data;
-		return event;
-	}
-	
 	private void setSelectionForMethodCombo(RuleKey ruleKey) {
 		// do not fire selection listener here
 		String method = ruleKey.getMethod().trim();

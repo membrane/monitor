@@ -30,6 +30,8 @@ public class AddProxyWizard extends Wizard {
 
 	private ProxyTypeSelectionPage selectionWizardPage = new ProxyTypeSelectionPage();
 
+	private WSDLProxyConfigurationPage wsdlProxyPage = new WSDLProxyConfigurationPage();
+	
 	ListenPortConfigurationPage listenPortConfigPage = new ListenPortConfigurationPage();
 
 	private TargetConfigurationPage targetHostConfigPage = new TargetConfigurationPage();
@@ -45,6 +47,7 @@ public class AddProxyWizard extends Wizard {
 	@Override
 	public void addPages() {
 		addPage(selectionWizardPage);
+		addPage(wsdlProxyPage);
 		addPage(listenPortConfigPage);
 		addPage(advancedProxyConfigPage);
 		addPage(targetHostConfigPage);
