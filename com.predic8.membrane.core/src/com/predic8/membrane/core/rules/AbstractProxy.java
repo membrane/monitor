@@ -281,7 +281,7 @@ public abstract class AbstractProxy extends AbstractConfigElement implements Rul
 	
 	@Override
 	protected void parseAttributes(XMLStreamReader token) {
-		name = token.getAttributeValue(Constants.NS_UNDEFINED, "name");
+		name = token.getAttributeValue("", "name");
 		parseKeyAttributes(token);
 		parseTLS(token);
 		parseBlocking(token);
@@ -395,7 +395,7 @@ public abstract class AbstractProxy extends AbstractConfigElement implements Rul
 	public XMLStreamReader getStreamReaderFor(byte[] bytes) throws XMLStreamException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 	    ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-	    return factory.createXMLStreamReader(stream);
+	    return new FixedStreamReader(factory.createXMLStreamReader(stream));
 	}
 	
 	protected abstract AbstractProxy getNewInstance();

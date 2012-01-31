@@ -71,9 +71,9 @@ public class ServiceProxy extends AbstractProxy {
 
 	@Override
 	protected void parseKeyAttributes(XMLStreamReader token) {
-		String host = defaultTo(token.getAttributeValue(Constants.NS_UNDEFINED, "host"), "*");
-		int port = Integer.parseInt(defaultTo(token.getAttributeValue(Constants.NS_UNDEFINED, "port"),"80"));
-		String method = defaultTo(token.getAttributeValue(Constants.NS_UNDEFINED, "method"), "*");
+		String host = defaultTo(token.getAttributeValue("", "host"), "*");
+		int port = Integer.parseInt(defaultTo(token.getAttributeValue("", "port"),"80"));
+		String method = defaultTo(token.getAttributeValue("", "method"), "*");
 		key = new ServiceProxyKey(host, method, ".*", port);
 	}
 	
