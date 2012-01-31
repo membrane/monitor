@@ -57,8 +57,10 @@ public class ConfigurationManager {
 				deploymentThread = new HotDeploymentThread(router);
 				deploymentThread.setProxiesFile(fileName);
 				deploymentThread.start();
+			} else {
+				deploymentThread.setProxiesFile(fileName);
 			}
-			deploymentThread.setProxiesFile(fileName);
+			
 		}
 	}
 
@@ -144,4 +146,15 @@ public class ConfigurationManager {
 	public void setHotDeploy(boolean hotDeploy) {
 		this.hotDeploy = hotDeploy;
 	}
+	
+	public void stopHotDeployment() {
+		if (!hotDeploy)
+			return;
+		try {
+			deploymentThread.interrupt();
+			deploymentThread.join();
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
+	}	
 }

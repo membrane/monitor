@@ -43,6 +43,7 @@ public class HotDeploymentThread extends Thread {
 			} catch (XMLStreamException e) {
 				log.error("Could not redeploy " + proxiesFile + ": " + e.getMessage());
 				lastModified = new File(proxiesFile).lastModified();
+			} catch (InterruptedException e) {				
 			} catch (Exception e) {
 				log.error("Could not redeploy " + proxiesFile, e);
 				lastModified = new File(proxiesFile).lastModified();

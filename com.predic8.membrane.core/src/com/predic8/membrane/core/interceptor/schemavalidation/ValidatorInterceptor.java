@@ -75,14 +75,16 @@ public class ValidatorInterceptor extends AbstractInterceptor {
 	private Outcome validateMessage(Exchange exc, Message msg) throws Exception {
 		List<Exception> exceptions = new ArrayList<Exception>();
 		for (Validator validator: validators) {
-			validator.validate(getMessageBody(msg.getBodyAsStream()));
-			SchemaValidatorErrorHandler handler = (SchemaValidatorErrorHandler)validator.getErrorHandler();
-			// the message must be valid for one schema embedded into WSDL 
-			if (handler.noErrors()) {
-				return Outcome.CONTINUE;
+			synchronized (validator) {
+				SchemaValidatorErrorHandler handler = (SchemaValidatorErrorHandler)validator.getErrorHandler();
+				handler.reset();				
+				validator.validate(getMessageBody(msg.getBodyAsStream()));
+				// the message must be valid for one schema embedded into WSDL 
+				if (handler.noErrors()) {
+					return Outcome.CONTINUE;
+				}
+				exceptions.add(handler.getException());
 			}
-			exceptions.add(handler.getException());
-			handler.reset();
 		}
 		exc.setResponse(HttpUtil.createSOAPFaultResponse(getErrorMsg(exceptions)));
 		return Outcome.ABORT;
