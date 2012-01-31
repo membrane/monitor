@@ -33,7 +33,7 @@ public class Constants {
 	public static final String ISO_8859_1 = "ISO-8859-1";
 	
 	public static final String UNKNOWN = "unknown";
-	
+	 
 	public static final String N_A = "N/A";
 	
 	public static final String HTTP_VERSION_11 = "1.1";
