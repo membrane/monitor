@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.predic8.membrane.core.Constants;
+import com.predic8.membrane.core.FixedStreamReader;
 import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.interceptor.Interceptor;
 import com.predic8.membrane.core.interceptor.acl.AccessControlInterceptor;
@@ -74,7 +75,7 @@ public class ProxyRuleTest {
 		rule.setRouter(router);
 		
 		XMLInputFactory factory = XMLInputFactory.newInstance();
-		XMLStreamReader reader = factory.createXMLStreamReader((new ByteArrayInputStream(buffer)), Constants.UTF_8);
+		XMLStreamReader reader = new FixedStreamReader(factory.createXMLStreamReader((new ByteArrayInputStream(buffer)), Constants.UTF_8));
 		
 		while(reader.next() != XMLStreamReader.START_ELEMENT);
 		
