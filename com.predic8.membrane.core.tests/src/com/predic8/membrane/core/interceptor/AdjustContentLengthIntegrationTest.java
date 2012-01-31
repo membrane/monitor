@@ -59,13 +59,13 @@ public class AdjustContentLengthIntegrationTest extends TestCase {
 
 	private GetMethod getDirektRequest() {
 		GetMethod get = new GetMethod(
-				"http://thomas-bayer.com/sqlrest/CUSTOMER/2/");
+				"http://thomas-bayer.com/sqlrest/CUSTOMER/8940/");
 		return get;
 	}
 
 	private GetMethod getMonitoredRequest() {
 		GetMethod get = new GetMethod(
-				"http://localhost:5000/sqlrest/CUSTOMER/2/");
+				"http://localhost:5000/sqlrest/CUSTOMER/8940/");
 		return get;
 	}
 }

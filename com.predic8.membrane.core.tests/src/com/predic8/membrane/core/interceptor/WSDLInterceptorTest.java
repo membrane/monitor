@@ -139,7 +139,7 @@ public class WSDLInterceptorTest {
 	}
 	
 	private String getLocationAttributeFor(StartElement element) {
-		return element.getAttributeByName(new QName(Constants.NS_UNDEFINED , "location")).getValue();
+		return element.getAttributeByName(new QName("" , "location")).getValue();
 	}
 	
 	private boolean matchSoap12(String pattern) throws XMLStreamException, Exception {
