@@ -137,7 +137,7 @@ public class Balancer extends AbstractXmlElement {
 					if (token.getLocalName().equals("node")) {
 						GenericComplexElement n = new GenericComplexElement();
 						n.parse(token);
-						up(c.getAttribute("name"), n.getAttribute("host"),
+						up(c.getAttributeOrDefault("name", Cluster.DEFAULT_NAME), n.getAttribute("host"),
 								Integer.parseInt(n.getAttribute("port")));
 					} else {
 						super.parseChildren(token, child);
@@ -174,6 +174,5 @@ public class Balancer extends AbstractXmlElement {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-	
+	}	 	
 }
