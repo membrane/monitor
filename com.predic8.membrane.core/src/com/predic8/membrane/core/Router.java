@@ -19,13 +19,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import com.predic8.membrane.core.exchangestore.ExchangeStore;
 import com.predic8.membrane.core.exchangestore.ForgetfulExchangeStore;
@@ -65,21 +62,6 @@ public class Router {
 		return init(configFileName, Router.class.getClassLoader());
 	}
 
-	public static Router initFromServlet(ServletContext ctx) {
-		log.debug("loading spring config from servlet.");
-
-		beanFactory = new XmlWebApplicationContext();
-		((XmlWebApplicationContext) beanFactory).setServletContext(ctx);
-		((XmlWebApplicationContext) beanFactory).setConfigLocation(ctx
-				.getInitParameter("contextConfigLocation"));
-
-		beanFactory.refresh();
-
-		router = (Router) beanFactory.getBean("router");
-
-		return router;
-	}
-	
 	public static Router init(String resource, ClassLoader classLoader) {
 		log.debug("loading spring config: " + resource);
 
@@ -165,5 +147,15 @@ public class Router {
 
 	public void setResourceResolver(ResourceResolver resourceResolver) {
 		this.resourceResolver = resourceResolver;
+	}
+
+	public static AbstractApplicationContext getBeanFactory() {
+		return beanFactory;
+	}
+
+	public static void setBeanFactory(AbstractApplicationContext beanFactory) {
+		Router.beanFactory = beanFactory;
 	}	
+	
+	
 }
