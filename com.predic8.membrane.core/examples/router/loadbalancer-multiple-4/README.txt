@@ -26,10 +26,10 @@ To run the example execute the following steps:
 
 2. Execute router.bat
 
-3. Open the URL http://localhost:8080/ in your browser and repeatedly refresh (F5). Observe that the response alternates
+3. Open the URL http://localhost:8080/service in your browser and repeatedly refresh (F5). Observe that the response alternates
    between Mock Node 1 and 2.
    
-4. Open the URL http://localhost:8081/ and refresh serveral times. Observe that you now alternate between Mock Node 3
+4. Open the URL http://localhost:8081/service and refresh serveral times. Observe that you now alternate between Mock Node 3
    and Mock Node 4.
 
 5. Open the URL http://localhost:9000/admin/
@@ -45,7 +45,7 @@ To run the example execute the following steps:
    
 9. Then go back to the admin interface and refresh. Note that the second node now has status "DOWN".
 
-10. Open again the URL http://localhost:8080/ and repeatedly refresh. Note that you now stay on Mock Node 1. 
+10. Open again the URL http://localhost:8080/service and repeatedly refresh. Note that you now stay on Mock Node 1. 
 
 
 
