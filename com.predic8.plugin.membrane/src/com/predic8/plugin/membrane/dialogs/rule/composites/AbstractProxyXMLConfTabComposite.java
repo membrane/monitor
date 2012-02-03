@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.PlatformUI;
 
 import com.predic8.membrane.core.Constants;
+import com.predic8.membrane.core.FixedStreamReader;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.membrane.core.util.TextUtil;
 import com.predic8.plugin.membrane.listeners.HighligtingLineStyleListner;
@@ -81,7 +82,7 @@ public abstract class AbstractProxyXMLConfTabComposite extends AbstractProxyFeat
 	public XMLStreamReader getStreamReaderForContent() throws XMLStreamException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 	    ByteArrayInputStream stream = new ByteArrayInputStream(text.getText().getBytes());
-	    return factory.createXMLStreamReader(stream);
+	    return new FixedStreamReader(factory.createXMLStreamReader(stream));
 	}
 	
 	@Override

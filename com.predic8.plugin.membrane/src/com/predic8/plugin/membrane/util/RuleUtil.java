@@ -5,6 +5,7 @@ import java.io.*;
 import javax.xml.stream.*;
 
 import com.predic8.membrane.core.Constants;
+import com.predic8.membrane.core.FixedStreamReader;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.membrane.core.util.TextUtil;
 
@@ -25,7 +26,7 @@ public class RuleUtil {
 	public static XMLStreamReader getStreamReaderFor(byte[] bytes) throws XMLStreamException {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 	    ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-	    return factory.createXMLStreamReader(stream);
+	    return new FixedStreamReader(factory.createXMLStreamReader(stream));
 	}
 	
 }
