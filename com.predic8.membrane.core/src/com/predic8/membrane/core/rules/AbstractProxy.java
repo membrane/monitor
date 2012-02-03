@@ -165,9 +165,16 @@ public abstract class AbstractProxy extends AbstractConfigElement implements
 	}
 
 	private Interceptor addAdminAndWebServerInterceptor(XMLStreamReader token) {
+		
+		RegExURLRewriteInterceptor r = new RegExURLRewriteInterceptor();
+		r.setRewriteOriginalRequestUri(true);
+		r.getMappings().add(new RegExURLRewriteInterceptor.Mapping("^/?$", "/admin"));
+		interceptors.add(r);
+		
 		Interceptor a = new AdminConsoleInterceptor();
 		a.setRouter(router);
 		interceptors.add(a);
+		
 		Interceptor i = new WebServerInterceptor();
 		i.setRouter(router);
 		interceptors.add(i);
