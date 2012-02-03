@@ -36,7 +36,7 @@ public class RegExURLRewriteInterceptor extends AbstractInterceptor {
 		public Mapping(String regex, String uri) {
 			this.regex = regex;
 			this.uri = uri;
-			pattern = Pattern.compile(".*"+regex);
+			pattern = Pattern.compile(regex.startsWith("^")?regex:".*?:(//)?[^/]*"+regex); // .*?:(//)?[^/]* matches schema and host
 		}
 		
 		public boolean matchesSubstring(String input) {
@@ -48,7 +48,8 @@ public class RegExURLRewriteInterceptor extends AbstractInterceptor {
 			.getName());
 
 	private List<Mapping> mappings = new ArrayList<Mapping>();
-
+	private boolean rewriteOriginalRequestUri = false;
+	
 	public RegExURLRewriteInterceptor() {
 		name = "RegEx URL Rewriter";
 	}
@@ -61,18 +62,32 @@ public class RegExURLRewriteInterceptor extends AbstractInterceptor {
 		ListIterator<String>  it = exc.getDestinations().listIterator();
 		while ( it.hasNext() ) {
 			String dest = it.next();
-			log.debug("destination: " + dest);
-			
-			Mapping mapping = findFirstMatchingRegEx(dest);
-			if (mapping == null)
-				continue;
-			
-			log.debug("match found: " + mapping.regex);
-			log.debug("replacing with: " + mapping.uri);
-
-			it.set(replace(dest, mapping));			
+						
+			it.set(getReplacedUri(dest));
 		}
+		
+		if (rewriteOriginalRequestUri) {
+			log.debug("rewriting original request uri");
+			exc.setOriginalRequestUri(getReplacedUri(exc.getOriginalRequestUri()));
+		}
+		
 		return Outcome.CONTINUE;
+	}
+
+	private String getReplacedUri(String dest) {
+		
+		log.debug("searching match for: " + dest);
+		
+		Mapping mapping = findFirstMatchingRegEx(dest);
+		if (mapping == null) {
+			log.debug("no match found for: " + dest);
+			return dest;
+		}
+						
+		log.debug("match found: " + mapping.regex);
+		log.debug("replacing with: " + mapping.uri);
+
+		return replace(dest, mapping);
 	}
 
 	private void logMappings() {
@@ -135,4 +150,14 @@ public class RegExURLRewriteInterceptor extends AbstractInterceptor {
 			super.parseChildren(token, child);
 		}
 	}
+
+	public boolean isRewriteOriginalRequestUri() {
+		return rewriteOriginalRequestUri;
+	}
+
+	public void setRewriteOriginalRequestUri(boolean rewriteOriginalRequestUri) {
+		this.rewriteOriginalRequestUri = rewriteOriginalRequestUri;
+	}
+	
+	
 }
