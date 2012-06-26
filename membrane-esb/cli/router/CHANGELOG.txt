@@ -1,6 +1,9 @@
 Membrane ESB Change Log
 =============================================================================
 
+* [bugfix] links on services index page use wrong port when running as
+  servlet 
+
 * [release] 3.4.3
 
 * [usage improvement] servlet: port="..." is now ignored
