@@ -60,10 +60,10 @@ public class GroovyInterceptor extends AbstractInterceptor {
 	}
 
 	
-	private void createOneScript() throws InterruptedException {
+	private void createOneScript(ArrayBlockingQueue<Script> scripts, String src) throws InterruptedException {
 		Script s;
 		synchronized (shell) {
-			s = shell.parse(srcWithImports());
+			s = shell.parse(srcWithImports(src));
 		}
 		scripts.put(s);
 	}
@@ -71,18 +71,22 @@ public class GroovyInterceptor extends AbstractInterceptor {
 	public void init() {
 		if (router == null)
 			return;
-		scripts = new ArrayBlockingQueue<Script>(20);
+		scripts = new ArrayBlockingQueue<Script>(concurrency);
 		try {
-			createOneScript();
+			createOneScript(scripts, src);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
 		router.getBackgroundInitializator().execute(new Runnable() {
+			// close over 'scripts' and 'src' since their value might change while we run
+			private ArrayBlockingQueue<Script> scripts = GroovyInterceptor.this.scripts;
+			private String src = GroovyInterceptor.this.src;
+			
 			@Override
 			public void run() {
 				try {
 					for (int i = 1; i < concurrency; i++)
-						createOneScript();
+						createOneScript(scripts, src);
 				} catch (Exception e) {
 					log.error("Error creating Groovy Script:", e);
 				}
@@ -119,7 +123,7 @@ public class GroovyInterceptor extends AbstractInterceptor {
 		return Outcome.CONTINUE;
 	}
 
-	private String srcWithImports() {
+	private String srcWithImports(String src) {
 		return "import static com.predic8.membrane.core.interceptor.Outcome.*\nimport com.predic8.membrane.core.http.*\n"+src;
 	}		
 	
