@@ -1,6 +1,11 @@
 Membrane ESB Change Log
 =============================================================================
 
+* [release] 3.4.5
+
+* [improvement] set Default-Implementation and Default-Specification in
+  the MANIFEST.MF files to the Membrane version
+
 * [release] 3.4.4
 
 * [bugfix] repeated reinitialization caused GroovyInterceptor to hang
