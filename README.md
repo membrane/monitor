@@ -1,7 +1,7 @@
-Membrane ESB and Membrane Monitor
-=================================
+Membrane Monitor
+================
 
-Check the [Repository at GitHub](https://github.com/membrane/service-proxy) for the latest source code.
+Check the [Repository at GitHub](https://github.com/membrane/monitor) for the latest source code.
 
 What is Membrane?
 -----------------
@@ -14,32 +14,17 @@ Membrane is an open-source, reverse HTTP proxy framework written in Java, licens
 
 To get started, follow the [SOAP](http://membrane-soa.org/esb-doc/current/soap-quickstart.htm) and [REST](http://membrane-soa.org/esb-doc/current/rest-quickstart.htm) tutorials or have a look at the [examples](http://membrane-soa.org/esb-doc/current/interceptors/examples.htm).
 
+What is Membrane Monitor?
+-------------------------
+Membrane Monitor is a graphical user interface that allows you to capture, analyze and manipulate HTTP and SOAP messages.
+
 Get Started
 -----------
 
-Download the [binary](http://membrane-soa.org/downloads/http-router.htm).
+Download the [binary](http://membrane-soa.org/downloads/http-monitor.htm).
 
 Unpack.
 
-Start `membrane.sh` or `membrane.bat`.
+Start `membrane` or `membrane.exe`.
 
-Have a look at the main configuration file `proxies.xml`. Changes to this file are instantly deployed.
-
-Go to the [website](http://membrane-soa.org/esb/) for more documentation.
-
-Samples
--------
-
-Hosting virtual REST services is easy:
-```xml
-<serviceProxy port="80">
-    <path>/restnames/</path>
-    <target host="www.thomas-bayer.com" />
-</serviceProxy>
-```
-
-By default SOAP proxies configure themselves from WSDL:
-```xml
-<soapProxy wsdl="http://thomas-bayer.com/axis2/services/BLZService?wsdl">
-</soapProxy>
-```
+Go to the [website](http://membrane-soa.org/soap-monitor/) for more documentation and some screenshots.

@@ -1,1 +1,0 @@
-Please follow http://membrane-soa.org/esb-doc/current/rest-quickstart.htm .
