@@ -33,7 +33,7 @@ public class RemoveProxyAction extends AbstractProxyAction {
 			return;
 
 		try {
-			getHttpTransport().closePort(selectedProxy.getKey().getPort());
+			getHttpTransport().closePort(selectedProxy.getKey().getIp(), selectedProxy.getKey().getPort());
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}

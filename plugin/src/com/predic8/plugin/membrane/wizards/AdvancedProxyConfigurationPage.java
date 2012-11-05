@@ -75,7 +75,7 @@ public class AdvancedProxyConfigurationPage extends AbstractProxyWizardPage {
 		if (!isPageComplete())
 			return false;
 		try {
-			if (getTransport().isAnyThreadListeningAt(Integer.parseInt(ruleKeyGroup.getTextListenPort().getText()))) {
+			if (getTransport().isAnyThreadListeningAt(null, Integer.parseInt(ruleKeyGroup.getTextListenPort().getText()))) {
 				return true;
 			}
 			new ServerSocket(Integer.parseInt(ruleKeyGroup.getTextListenPort().getText())).close();
