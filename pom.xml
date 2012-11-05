@@ -62,7 +62,7 @@
         <project.reporting.outputEncoding>ISO-8859-1</project.reporting.outputEncoding>
         <javac.source>1.6</javac.source>
         <javac.target>1.6</javac.target>
-		<tycho-version>0.14.1</tycho-version>
+		<tycho-version>0.16.0</tycho-version>
     </properties>
 
 	<dependencyManagement>

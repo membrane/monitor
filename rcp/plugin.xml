@@ -23,15 +23,15 @@
          </property>
          <property
                name="aboutImage"
-               value="/com.predic8.rcp.membrane/icons/logo128.png">
+               value="rcp/icons/logo128.png">
          </property>
          <property
                name="aboutText"
-               value="Membrane Monitor Version 3.2.2&#x0A;  Copyright @  2004-2011 by predic8 GmbH&#x0A;  Moltkestr. 40  53173 Bonn Germany &#x0A;  www.predic8.com &#x0A;  Phone: +49 (0)228/555 25 76-0&#x0A;  info@predic8.de">
+               value="Membrane Monitor Version 3.5.1&#x0A;  Copyright @  2004-2012 by predic8 GmbH&#x0A;  Moltkestr. 40  53173 Bonn Germany &#x0A;  www.predic8.com &#x0A;  Phone: +49 (0)228/555 25 76-0&#x0A;  info@predic8.de">
          </property>
          <property
                name="windowImages"
-               value="/com.predic8.rcp.membrane/icons/logo32.png">
+               value="rcp/icons/logo32.png">
          </property>
       </product>
    </extension>

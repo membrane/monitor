@@ -20,7 +20,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>com.predic8.rcp.membrane</artifactId>
-    <packaging>eclipse-application</packaging>
+    <packaging>eclipse-repository</packaging>
 
     <parent>
         <groupId>com.predic8</groupId>
@@ -40,4 +40,27 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>materialize-products</id>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>archive-products</id>
+						<goals>
+							<goal>archive-products</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
