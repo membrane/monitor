@@ -29,6 +29,7 @@ The detailed test instructions, publication and homepage changes are to be integ
       change "Bundle-Version". Note that the "-SNAPSHOT" suffix of
       the Maven version translates into the suffix ".qualifier"
       here.
+   c. In product file in /rcp folder.
 
 3. Run "mvn deploy -DskipTests" first in \membrane-esb\, then in
    \membrane-monitor\ . (Note that this deployment can only
