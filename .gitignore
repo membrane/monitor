@@ -20,3 +20,8 @@
 /rcp/.project
 /rcp/.settings
 /rcp/target
+
+/repository/.classpath
+/repository/.project
+/repository/.settings
+/repository/target
