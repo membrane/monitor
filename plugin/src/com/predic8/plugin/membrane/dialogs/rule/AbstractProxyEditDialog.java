@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
+import com.predic8.membrane.annot.bean.MCUtil;
 import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.plugin.membrane.PlatformUtil;
@@ -98,7 +99,7 @@ public abstract class AbstractProxyEditDialog extends Dialog {
 		
 		this.originalRule = rule;
 		try {
-			workingCopy = originalRule.getDeepCopy();
+			workingCopy = MCUtil.clone(originalRule, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -184,12 +184,12 @@ public class ExchangesView extends TableViewPart implements IExchangesStoreListe
 		btTrackRequests.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
-				getConfiguration().setTrackExchange(btTrackRequests.getSelection());
+				PlatformUtil.setTrackExchange(btTrackRequests.getSelection());
 			}
 
 		});
 
-		btTrackRequests.setSelection(getConfiguration().getTrackExchange());
+		btTrackRequests.setSelection(PlatformUtil.isTrackExchange());
 
 		GridData gdata = new GridData();
 		gdata.horizontalIndent = 4;
@@ -376,7 +376,7 @@ public class ExchangesView extends TableViewPart implements IExchangesStoreListe
 					tableViewer.setItemCount(excArray.length);
 				}
 
-				if (getConfiguration().getTrackExchange()) {
+				if (PlatformUtil.isTrackExchange()) {
 					canShowBody = false;
 					if (excArray.length > 0)
 						tableViewer.setSelection(new StructuredSelection(excArray[excArray.length - 1]), true);
@@ -453,12 +453,6 @@ public class ExchangesView extends TableViewPart implements IExchangesStoreListe
 		part.updateUIStatus(canShowBody);
 	}
 
-	private Proxies getConfiguration() {
-		return PlatformUtil.getRouter().getConfigurationManager().getProxies();
-	}
-
-	
-	
 	public void ruleAdded(Rule rule) {
 		// ignore
 		

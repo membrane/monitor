@@ -36,7 +36,7 @@ public class SaveConfigurationCommand extends AbstractHandler {
         String selected = fd.open();
         if (selected != null && !selected.equals("")) {
         	try {
-				PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(selected);
+				PlatformUtil.saveConfiguration(selected);
 			} catch (Exception e) {
 				e.printStackTrace();
 				MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());

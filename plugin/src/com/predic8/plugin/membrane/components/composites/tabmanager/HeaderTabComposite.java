@@ -18,6 +18,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TabFolder;
 
 import com.predic8.membrane.core.http.Header;
+import com.predic8.membrane.core.http.HeaderField;
+import com.predic8.membrane.core.http.HeaderName;
 import com.predic8.membrane.core.http.Message;
 import com.predic8.plugin.membrane.viewers.HeaderTableViewer;
 
@@ -40,7 +42,9 @@ public class HeaderTabComposite extends AbstractTabComposite {
 	}
 	
 	public void updateWidget(Message msg, byte[] inputBodyBytes) {
-		tableViewer.update(msg.getHeader().setValue(Header.CONTENT_LENGTH, Integer.toString(inputBodyBytes.length)), null);
+		msg.getHeader().setValue(Header.CONTENT_LENGTH, Integer.toString(inputBodyBytes.length));
+		HeaderField hf = msg.getHeader().getValues(new HeaderName(Header.CONTENT_LENGTH)).get(0);
+		tableViewer.update(hf, null);
 	}
 	
 }

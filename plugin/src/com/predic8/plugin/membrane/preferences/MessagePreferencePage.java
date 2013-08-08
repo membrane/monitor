@@ -66,15 +66,13 @@ public class MessagePreferencePage extends PreferencePage implements IWorkbenchP
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new RowLayout(SWT.VERTICAL));
 
-		Proxies config = PlatformUtil.getRouter().getConfigurationManager().getProxies();
-
 		indentmsg = new Button(comp, SWT.CHECK);
 		indentmsg.setText("Indent Message");
-		indentmsg.setSelection(config.getIndentMessage());
+		indentmsg.setSelection(PlatformUtil.isIndentMessage());
 
 		adjhosthead = new Button(comp, SWT.CHECK);
-		adjhosthead.setText("Adjust Host Header Field");
-		adjhosthead.setSelection(config.getAdjustHostHeader());
+		adjhosthead.setText("Adjust Host Header (globally)");
+		adjhosthead.setSelection(PlatformUtil.isAdjustHostHeader());
 
 		return comp;
 	}
@@ -95,11 +93,11 @@ public class MessagePreferencePage extends PreferencePage implements IWorkbenchP
 	}
 
 	private void setAndSaveConfig() {
-		PlatformUtil.getRouter().getConfigurationManager().getProxies().setIndentMessage(indentmsg.getSelection());
-		PlatformUtil.getRouter().getConfigurationManager().getProxies().setAdjustHostHeader(adjhosthead.getSelection());
+		PlatformUtil.setIndentMessage(indentmsg.getSelection());
+		PlatformUtil.setAdjustHostHeader(adjhosthead.getSelection());
 		
 		try {
-			PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(PlatformUtil.getRouter().getConfigurationManager().getDefaultConfigurationFile());
+			PlatformUtil.saveConfiguration();
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());

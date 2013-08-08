@@ -39,7 +39,7 @@ public class LoadConfigurationCommand extends AbstractHandler {
 			return null;
 
 		try {
-			PlatformUtil.getRouter().getConfigurationManager().loadConfiguration(selected);
+			PlatformUtil.loadConfiguration(selected);
 		} catch (Exception e) {
 			MessageDialog.openError(Display.getDefault().getActiveShell(), "Load Configuration Error", e.getMessage());
 		}

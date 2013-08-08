@@ -32,7 +32,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.predic8.membrane.core.Router;
+import com.predic8.membrane.annot.bean.MCUtil;
+import com.predic8.membrane.core.resolver.HTTPSchemaResolver;
+import com.predic8.membrane.core.transport.http.client.HttpClientConfiguration;
 import com.predic8.membrane.core.transport.http.client.ProxyConfiguration;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
 import com.predic8.plugin.membrane.PlatformUtil;
@@ -135,29 +137,30 @@ public class ProxyPreferencePage extends PreferencePage implements IWorkbenchPre
 	}
 	
 	private void setWidgets() {
-		Proxies config = PlatformUtil.getRouter().getConfigurationManager().getProxies();
+		HTTPSchemaResolver httpSchemaResolver = PlatformUtil.getRouter().getResolverMap().getHTTPSchemaResolver();
+		HttpClientConfiguration httpClientConfig = httpSchemaResolver.getHttpClientConfig();
 		
-		ProxyConfiguration proxy = config.getProxyConfiguration();
+		ProxyConfiguration proxy = httpClientConfig.getProxy();
 		
 		if (proxy == null)
 			return;
 		
-		if (proxy.getProxyHost() != null) {
-			textHost.setText("" + proxy.getProxyHost());
+		if (proxy.getHost() != null) {
+			textHost.setText("" + proxy.getHost());
 		}
 
-		textPort.setText("" + proxy.getProxyPort());
+		textPort.setText("" + proxy.getPort());
 		
 
-		if (proxy.getProxyUsername() != null)
-			textUser.setText(proxy.getProxyUsername());
+		if (proxy.getUsername() != null)
+			textUser.setText(proxy.getUsername());
 
-		if (proxy.getProxyPassword() != null)
-			textPassword.setText(proxy.getProxyPassword());
+		if (proxy.getPassword() != null)
+			textPassword.setText(proxy.getPassword());
 
-		btUseAuthent.setSelection(proxy.isUseAuthentication());
+		btUseAuthent.setSelection(proxy.isAuthentication());
 		btUseAuthent.notifyListeners(SWT.Selection, null);
-		btUseProxy.setSelection(proxy.useProxy());
+		btUseProxy.setSelection(true);
 		btUseProxy.notifyListeners(SWT.Selection, null);
 	}
 
@@ -240,7 +243,7 @@ public class ProxyPreferencePage extends PreferencePage implements IWorkbenchPre
 		}
 
 		try {
-			PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(PlatformUtil.getRouter().getConfigurationManager().getDefaultConfigurationFile());
+			PlatformUtil.saveConfiguration();
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());
@@ -248,23 +251,30 @@ public class ProxyPreferencePage extends PreferencePage implements IWorkbenchPre
 	}
 
 	private void saveWidgetValues(boolean useProxy) {
-		Router router = PlatformUtil.getRouter();
-		ProxyConfiguration proxy = new ProxyConfiguration();
-		proxy.setUseProxy(useProxy);
-		proxy.setProxyHost(textHost.getText());
+		HTTPSchemaResolver httpSchemaResolver = PlatformUtil.getRouter().getResolverMap().getHTTPSchemaResolver();
 		
-		
-		try {
-			proxy.setProxyPort(Integer.parseInt(textPort.getText()));
-		} catch (NumberFormatException e) {
-			proxy.setProxyPort(0);
+		HttpClientConfiguration httpClientConfig = MCUtil.clone(httpSchemaResolver.getHttpClientConfig(), true);
+
+		if (useProxy) {
+			ProxyConfiguration proxy = new ProxyConfiguration();
+			httpClientConfig.setProxy(proxy);
+			proxy.setHost(textHost.getText());
+			
+			
+			try {
+				proxy.setPort(Integer.parseInt(textPort.getText()));
+			} catch (NumberFormatException e) {
+				proxy.setPort(0);
+			}
+			
+			proxy.setAuthentication(btUseAuthent.getSelection());
+			proxy.setUsername(textUser.getText());
+			proxy.setPassword(textPassword.getText());
+		} else {
+			httpClientConfig.setProxy(null);
 		}
 		
-		proxy.setUseAuthentication(btUseAuthent.getSelection());
-		proxy.setProxyUsername(textUser.getText());
-		proxy.setProxyPassword(textPassword.getText());
-		
-		router.getConfigurationManager().getProxies().setProxyConfiguration(proxy);
+		httpSchemaResolver.setHttpClientConfig(httpClientConfig);
 		
 	}
 

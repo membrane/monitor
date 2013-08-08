@@ -14,12 +14,7 @@
 
 package com.predic8.plugin.membrane.dialogs.rule;
 
-import javax.xml.stream.XMLStreamReader;
-
 import org.eclipse.swt.widgets.Shell;
-
-import com.predic8.membrane.core.rules.ProxyRule;
-import com.predic8.membrane.core.rules.Rule;
 
 public class ProxyConfigurationEditDialog extends AbstractProxyConfigurationEditDialog {
 
@@ -30,11 +25,6 @@ public class ProxyConfigurationEditDialog extends AbstractProxyConfigurationEdit
 	@Override
 	public String getTitle() {
 		return "Edit Proxy Configuration";
-	}
-
-	@Override
-	protected Rule parseRule(XMLStreamReader reader) throws Exception {
-		return (ProxyRule)new ProxyRule().parse(reader);
 	}
 
 }

@@ -17,8 +17,6 @@ package com.predic8.plugin.membrane.dialogs.rule;
 
 import java.net.URL;
 
-import javax.xml.stream.XMLStreamReader;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
@@ -35,6 +33,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import com.predic8.membrane.annot.bean.MCUtil;
 import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
@@ -127,8 +126,7 @@ public abstract class AbstractProxyConfigurationEditDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 		try {
-			XMLStreamReader reader = featuresTabComposite.getStreamReaderForContent();
-			Rule newRule = parseRule(reader);
+			Rule newRule = MCUtil.fromXML(Rule.class, featuresTabComposite.getContent());
 			replaceRule(rule, newRule);
 			close();
 		} catch (Exception e) {
@@ -150,8 +148,6 @@ public abstract class AbstractProxyConfigurationEditDialog extends Dialog {
 		getRuleManager().addProxyAndOpenPortIfNew(newRule);
 	}
 	
-	protected abstract Rule parseRule(XMLStreamReader reader) throws Exception;
-		
 	protected RuleManager getRuleManager() {
 		return PlatformUtil.getRouter().getRuleManager();
 	}

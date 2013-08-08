@@ -56,7 +56,7 @@ public class XMLTabComposite extends BodyTextTabComposite {
 	}
 	
 	protected boolean isBeautifyBody() {
-		return PlatformUtil.getRouter().getConfigurationManager().getProxies().getIndentMessage();
+		return PlatformUtil.isIndentMessage();
 	}
 	
 	@Override

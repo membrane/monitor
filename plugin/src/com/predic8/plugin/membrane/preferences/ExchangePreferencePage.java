@@ -53,7 +53,7 @@ public class ExchangePreferencePage extends PreferencePage implements IWorkbench
 		comp.setLayout(new RowLayout(SWT.VERTICAL));
 		autoTrack = new Button(comp, SWT.CHECK);
 		autoTrack.setText("Autotrack New Exchanges");
-		autoTrack.setSelection(PlatformUtil.getRouter().getConfigurationManager().getProxies().getTrackExchange());
+		autoTrack.setSelection(PlatformUtil.isTrackExchange());
 
 		return comp;
 	}
@@ -64,9 +64,9 @@ public class ExchangePreferencePage extends PreferencePage implements IWorkbench
 
 	@Override
 	protected void performApply() {
-		PlatformUtil.getRouter().getConfigurationManager().getProxies().setTrackExchange(autoTrack.getSelection());
+		PlatformUtil.setTrackExchange(autoTrack.getSelection());
 		try {
-			PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(PlatformUtil.getRouter().getConfigurationManager().getDefaultConfigurationFile());
+			PlatformUtil.saveConfiguration();
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());
@@ -75,9 +75,9 @@ public class ExchangePreferencePage extends PreferencePage implements IWorkbench
 
 	@Override
 	public boolean performOk() {
-		PlatformUtil.getRouter().getConfigurationManager().getProxies().setTrackExchange(autoTrack.getSelection());
+		PlatformUtil.setTrackExchange(autoTrack.getSelection());
 		try {
-			PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(PlatformUtil.getRouter().getConfigurationManager().getDefaultConfigurationFile());
+			PlatformUtil.saveConfiguration();
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());

@@ -1,18 +1,20 @@
 package com.predic8.plugin.membrane.dialogs.rule.composites;
 
-import java.io.*;
+import java.io.StringReader;
 import java.net.URL;
-
-import javax.xml.stream.*;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.PlatformUI;
 
-import com.predic8.membrane.core.Constants;
+import com.predic8.membrane.annot.bean.MCUtil;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.membrane.core.util.TextUtil;
 import com.predic8.plugin.membrane.listeners.HighligtingLineStyleListner;
@@ -66,22 +68,11 @@ public abstract class AbstractProxyXMLConfTabComposite extends AbstractProxyFeat
 	public void setRule(Rule rule) {
 		super.setRule(rule);
 		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(baos, Constants.UTF_8);
-			rule.write(writer);
-			ByteArrayInputStream stream = new ByteArrayInputStream(baos.toByteArray());
-			InputStreamReader reader = new InputStreamReader(stream, Constants.UTF_8);
-			originalXml = TextUtil.formatXML(reader);
+			originalXml = TextUtil.formatXML(new StringReader(MCUtil.toXML(rule)));
 			text.setText(originalXml);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-	}
-	
-	public XMLStreamReader getStreamReaderForContent() throws XMLStreamException {
-		XMLInputFactory factory = XMLInputFactory.newInstance();
-	    ByteArrayInputStream stream = new ByteArrayInputStream(text.getText().getBytes());
-	    return factory.createXMLStreamReader(stream);
 	}
 	
 	@Override
@@ -120,15 +111,11 @@ public abstract class AbstractProxyXMLConfTabComposite extends AbstractProxyFeat
 			return;
 		
 		try {
-			XMLStreamReader reader = getStreamReaderForContent();
-			rule = parseRule(reader);
-			
+			rule = MCUtil.fromXML(Rule.class, text.getText());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	
 	}
-	
-	protected abstract Rule parseRule(XMLStreamReader reader) throws Exception;
 	
 }
