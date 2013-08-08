@@ -17,7 +17,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import com.predic8.membrane.core.Router;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.PluginUtil;
 import com.predic8.plugin.membrane.views.ProxyStatisticsView;
 
@@ -25,7 +25,7 @@ public class ShowProxyStatisticsCommand extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ProxyStatisticsView proxyStatisticsView = (ProxyStatisticsView) PluginUtil.showView(ProxyStatisticsView.VIEW_ID);
-		proxyStatisticsView.setInputForTable(Router.getInstance().getRuleManager());
+		proxyStatisticsView.setInputForTable(PlatformUtil.getRouter().getRuleManager());
 		return null;
 	}
 

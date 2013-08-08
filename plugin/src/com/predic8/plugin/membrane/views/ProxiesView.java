@@ -35,20 +35,24 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.exchange.AbstractExchange;
 import com.predic8.membrane.core.rules.Rule;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.actions.exchanges.RemoveAllExchangesAction;
-import com.predic8.plugin.membrane.actions.rules.RemoveProxyAction;
-import com.predic8.plugin.membrane.actions.rules.RenameProxyAction;
 import com.predic8.plugin.membrane.actions.rules.AbstractProxyAction;
 import com.predic8.plugin.membrane.actions.rules.EditProxyAction;
+import com.predic8.plugin.membrane.actions.rules.RemoveProxyAction;
+import com.predic8.plugin.membrane.actions.rules.RenameProxyAction;
 import com.predic8.plugin.membrane.actions.views.ShowProxyDetailsViewAction;
 import com.predic8.plugin.membrane.celleditors.ProxyNameCellEditorModifier;
 import com.predic8.plugin.membrane.components.composites.ProxiesViewControlsComposite;
@@ -79,9 +83,9 @@ public class ProxiesView extends AbstractProxiesView {
 		createActions();
 		addTableMenu();
 		
-		Router.getInstance().getExchangeStore().addExchangesStoreListener(this);
-		Router.getInstance().getRuleManager().addRuleChangeListener(this);
-		setInputForTable(Router.getInstance().getRuleManager());
+		PlatformUtil.getRouter().getExchangeStore().addExchangesStoreListener(this);
+		PlatformUtil.getRouter().getRuleManager().addRuleChangeListener(this);
+		setInputForTable(PlatformUtil.getRouter().getRuleManager());
 	}
 	
 	
@@ -227,7 +231,7 @@ public class ProxiesView extends AbstractProxiesView {
 	
 	@Override
 	public void ruleRemoved(Rule rule, int rulesLeft) {
-		setInputForTable(Router.getInstance().getRuleManager());
+		setInputForTable(PlatformUtil.getRouter().getRuleManager());
 		changeSelectionAfterRemoval();
 		if (rulesLeft == 0){
 			enableActions(false);
@@ -235,11 +239,11 @@ public class ProxiesView extends AbstractProxiesView {
 	}
 
 	public void ruleUpdated(Rule rule) {
-		setInputForTable(Router.getInstance().getRuleManager());
+		setInputForTable(PlatformUtil.getRouter().getRuleManager());
 	}
 
 	public void rulePositionsChanged() {
-		setInputForTable(Router.getInstance().getRuleManager());
+		setInputForTable(PlatformUtil.getRouter().getRuleManager());
 	}
 
 	

@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-import com.predic8.membrane.core.Router;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.PluginUtil;
 import com.predic8.plugin.membrane.views.ProxyTableView;
 
@@ -38,7 +38,7 @@ public class ShowProxiesTableAction implements IWorkbenchWindowActionDelegate {
 
 	public void run(IAction action) {
 		ProxyTableView proxyTableView = (ProxyTableView) PluginUtil.showView(ProxyTableView.VIEW_ID);
-		proxyTableView.getTableViewer().setInput(Router.getInstance().getRuleManager());
+		proxyTableView.getTableViewer().setInput(PlatformUtil.getRouter().getRuleManager());
 
 	}
 

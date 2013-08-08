@@ -32,10 +32,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.predic8.membrane.core.Proxies;
 import com.predic8.membrane.core.Router;
-import com.predic8.membrane.core.config.ProxyConfiguration;
+import com.predic8.membrane.core.transport.http.client.ProxyConfiguration;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.listeners.PortVerifyListener;
 import com.predic8.plugin.membrane.util.SWTUtil;
 
@@ -135,7 +135,7 @@ public class ProxyPreferencePage extends PreferencePage implements IWorkbenchPre
 	}
 	
 	private void setWidgets() {
-		Proxies config = Router.getInstance().getConfigurationManager().getProxies();
+		Proxies config = PlatformUtil.getRouter().getConfigurationManager().getProxies();
 		
 		ProxyConfiguration proxy = config.getProxyConfiguration();
 		
@@ -240,7 +240,7 @@ public class ProxyPreferencePage extends PreferencePage implements IWorkbenchPre
 		}
 
 		try {
-			Router.getInstance().getConfigurationManager().saveConfiguration(Router.getInstance().getConfigurationManager().getDefaultConfigurationFile());
+			PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(PlatformUtil.getRouter().getConfigurationManager().getDefaultConfigurationFile());
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());
@@ -248,7 +248,7 @@ public class ProxyPreferencePage extends PreferencePage implements IWorkbenchPre
 	}
 
 	private void saveWidgetValues(boolean useProxy) {
-		Router router = Router.getInstance();
+		Router router = PlatformUtil.getRouter();
 		ProxyConfiguration proxy = new ProxyConfiguration();
 		proxy.setUseProxy(useProxy);
 		proxy.setProxyHost(textHost.getText());

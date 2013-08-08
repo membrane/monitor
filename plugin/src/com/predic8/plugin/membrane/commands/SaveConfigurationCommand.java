@@ -21,7 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
-import com.predic8.membrane.core.Router;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 
 public class SaveConfigurationCommand extends AbstractHandler {
@@ -36,7 +36,7 @@ public class SaveConfigurationCommand extends AbstractHandler {
         String selected = fd.open();
         if (selected != null && !selected.equals("")) {
         	try {
-				Router.getInstance().getConfigurationManager().saveConfiguration(selected);
+				PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(selected);
 			} catch (Exception e) {
 				e.printStackTrace();
 				MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());

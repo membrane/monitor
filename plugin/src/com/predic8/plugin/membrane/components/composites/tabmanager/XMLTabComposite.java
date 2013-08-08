@@ -21,8 +21,8 @@ import java.io.InputStreamReader;
 import org.eclipse.swt.widgets.TabFolder;
 
 import com.predic8.membrane.core.Constants;
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.util.TextUtil;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.listeners.HighligtingLineStyleListner;
 
 public class XMLTabComposite extends BodyTextTabComposite {
@@ -56,7 +56,7 @@ public class XMLTabComposite extends BodyTextTabComposite {
 	}
 	
 	protected boolean isBeautifyBody() {
-		return Router.getInstance().getConfigurationManager().getProxies().getIndentMessage();
+		return PlatformUtil.getRouter().getConfigurationManager().getProxies().getIndentMessage();
 	}
 	
 	@Override

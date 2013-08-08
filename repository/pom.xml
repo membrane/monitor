@@ -22,7 +22,7 @@
         <groupId>com.predic8</groupId>
         <artifactId>membrane-monitor</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>3.5.6-SNAPSHOT</version>
+        <version>4.0.9</version>
     </parent>
 
 	<properties>

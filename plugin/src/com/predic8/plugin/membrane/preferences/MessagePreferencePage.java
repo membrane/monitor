@@ -26,9 +26,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.predic8.membrane.core.Proxies;
-import com.predic8.membrane.core.Router;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -67,7 +66,7 @@ public class MessagePreferencePage extends PreferencePage implements IWorkbenchP
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new RowLayout(SWT.VERTICAL));
 
-		Proxies config = Router.getInstance().getConfigurationManager().getProxies();
+		Proxies config = PlatformUtil.getRouter().getConfigurationManager().getProxies();
 
 		indentmsg = new Button(comp, SWT.CHECK);
 		indentmsg.setText("Indent Message");
@@ -96,11 +95,11 @@ public class MessagePreferencePage extends PreferencePage implements IWorkbenchP
 	}
 
 	private void setAndSaveConfig() {
-		Router.getInstance().getConfigurationManager().getProxies().setIndentMessage(indentmsg.getSelection());
-		Router.getInstance().getConfigurationManager().getProxies().setAdjustHostHeader(adjhosthead.getSelection());
+		PlatformUtil.getRouter().getConfigurationManager().getProxies().setIndentMessage(indentmsg.getSelection());
+		PlatformUtil.getRouter().getConfigurationManager().getProxies().setAdjustHostHeader(adjhosthead.getSelection());
 		
 		try {
-			Router.getInstance().getConfigurationManager().saveConfiguration(Router.getInstance().getConfigurationManager().getDefaultConfigurationFile());
+			PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(PlatformUtil.getRouter().getConfigurationManager().getDefaultConfigurationFile());
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());

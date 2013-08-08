@@ -28,10 +28,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.exchange.AbstractExchange;
 import com.predic8.membrane.core.exchangestore.ExchangeStore;
 import com.predic8.membrane.core.rules.Rule;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.contentproviders.ProxyStatisticsContentProvider;
 import com.predic8.plugin.membrane.labelproviders.ProxyStatisticsLabelProvider;
 import com.predic8.plugin.membrane.util.SWTUtil;
@@ -53,7 +53,7 @@ public class ProxyStatisticsView extends AbstractProxiesView {
 		new Label(composite, SWT.NONE).setText(" All times in ms");
 					
 	    getExchangeStore().addExchangesStoreListener(this);
-	    setInputForTable(Router.getInstance().getRuleManager());
+	    setInputForTable(PlatformUtil.getRouter().getRuleManager());
 	}
 
 	@Override
@@ -90,14 +90,14 @@ public class ProxyStatisticsView extends AbstractProxiesView {
 		bt.setText("Refresh Table");
 		bt.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				 setInputForTable(Router.getInstance().getRuleManager());
+				 setInputForTable(PlatformUtil.getRouter().getRuleManager());
 			}
 		});
 	}
 
 
 	private ExchangeStore getExchangeStore() {
-		return Router.getInstance().getExchangeStore();
+		return PlatformUtil.getRouter().getExchangeStore();
 	}
 
 	@Override
@@ -126,18 +126,18 @@ public class ProxyStatisticsView extends AbstractProxiesView {
 	
 	@Override
 	public void ruleRemoved(Rule rule, int rulesleft) {
-		setInputForTable(Router.getInstance().getRuleManager());
+		setInputForTable(PlatformUtil.getRouter().getRuleManager());
 	}
 
 	@Override
 	public void ruleUpdated(Rule rule) {
-		setInputForTable(Router.getInstance().getRuleManager());
+		setInputForTable(PlatformUtil.getRouter().getRuleManager());
 	}
 
 
 	@Override
 	public void rulePositionsChanged() {
-		setInputForTable(Router.getInstance().getRuleManager());
+		setInputForTable(PlatformUtil.getRouter().getRuleManager());
 	}
 
 	@Override

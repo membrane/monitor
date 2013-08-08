@@ -2,13 +2,21 @@ package com.predic8.plugin.membrane.dialogs.rule;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 
-import com.predic8.membrane.core.*;
+import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.rules.Rule;
-import com.predic8.plugin.membrane.dialogs.rule.composites.*;
+import com.predic8.plugin.membrane.PlatformUtil;
+import com.predic8.plugin.membrane.dialogs.rule.composites.AbstractProxyFeatureComposite;
+import com.predic8.plugin.membrane.dialogs.rule.composites.ProxyActionsTabComposite;
+import com.predic8.plugin.membrane.dialogs.rule.composites.ProxyGeneralInfoTabComposite;
 import com.predic8.plugin.membrane.util.SWTUtil;
 
 public abstract class AbstractProxyEditDialog extends Dialog {
@@ -144,7 +152,7 @@ public abstract class AbstractProxyEditDialog extends Dialog {
 	}
 	
 	protected RuleManager getRuleManager() {
-		return Router.getInstance().getRuleManager();
+		return PlatformUtil.getRouter().getRuleManager();
 	}
 	
 	private boolean isRuleChanged() {

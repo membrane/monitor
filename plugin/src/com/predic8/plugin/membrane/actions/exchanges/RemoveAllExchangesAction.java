@@ -14,8 +14,8 @@
 
 package com.predic8.plugin.membrane.actions.exchanges;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.actions.rules.AbstractProxyAction;
 import com.predic8.plugin.membrane.resources.ImageKeys;
 
@@ -27,7 +27,7 @@ public class RemoveAllExchangesAction extends AbstractProxyAction {
 	}
 	
 	public void run() {
-		Router.getInstance().getExchangeStore().removeAllExchanges(selectedProxy);
+		PlatformUtil.getRouter().getExchangeStore().removeAllExchanges(selectedProxy);
 	}
 
 }

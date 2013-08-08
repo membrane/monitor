@@ -21,16 +21,19 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.part.ViewPart;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.exchange.AbstractExchange;
 import com.predic8.membrane.core.exchange.Exchange;
 import com.predic8.membrane.core.http.Message;
 import com.predic8.membrane.core.model.IExchangesStoreListener;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.contentproviders.MessageViewContentProvider;
 import com.predic8.plugin.membrane.resources.ImageKeys;
 import com.predic8.plugin.membrane.viewcomponents.BaseComp;
@@ -66,7 +69,7 @@ public abstract class AbstractMessageView extends ViewPart implements IBaseCompo
 
 		itemSave = createItemSave();
 
-		Router.getInstance().getExchangeStore().addExchangesStoreListener(this);
+		PlatformUtil.getRouter().getExchangeStore().addExchangesStoreListener(this);
 	}
 
 	private ToolItem createItemContinue() {

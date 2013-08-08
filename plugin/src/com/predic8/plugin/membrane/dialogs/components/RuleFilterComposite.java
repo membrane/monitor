@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.membrane.core.rules.RuleKey;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.filtering.ExchangesFilter;
 
 public class RuleFilterComposite extends AbstractFilterComposite {
@@ -55,7 +55,7 @@ public class RuleFilterComposite extends AbstractFilterComposite {
 
 	@Override
 	protected void initializeButtons(Composite composite) {
-		Collection<Rule> rules = Router.getInstance().getRuleManager().getRules();
+		Collection<Rule> rules = PlatformUtil.getRouter().getRuleManager().getRules();
 		for (Rule rule : rules) {
 			final Button bt = new Button(composite, SWT.CHECK);
 			bt.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));

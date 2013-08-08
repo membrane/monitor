@@ -20,11 +20,13 @@ import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.model.IRuleChangeListener;
 import com.predic8.membrane.core.rules.Rule;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.contentproviders.ProxyTableContentProvider;
 import com.predic8.plugin.membrane.labelproviders.ProxyTableLabelProvider;
 import com.predic8.plugin.membrane.util.SWTUtil;
@@ -45,7 +47,7 @@ public class ProxyTableView extends TableViewPart implements IRuleChangeListener
 		createTitleLabel(titleComposite);
 		
 		createTableViewer(composite);
-		Router.getInstance().getRuleManager().addRuleChangeListener(this);
+		PlatformUtil.getRouter().getRuleManager().addRuleChangeListener(this);
 	}
 
 	@Override
@@ -111,7 +113,7 @@ public class ProxyTableView extends TableViewPart implements IRuleChangeListener
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				tableViewer.setInput(Router.getInstance().getRuleManager());
+				tableViewer.setInput(PlatformUtil.getRouter().getRuleManager());
 			}
 		});
 	}

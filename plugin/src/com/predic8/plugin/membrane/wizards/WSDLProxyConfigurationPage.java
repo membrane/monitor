@@ -3,25 +3,44 @@ package com.predic8.plugin.membrane.wizards;
 import java.io.IOException;
 import java.net.URL;
 
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.viewers.*;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
-import com.predic8.membrane.core.*;
-import com.predic8.membrane.core.interceptor.*;
+import com.predic8.membrane.core.Constants;
+import com.predic8.membrane.core.interceptor.Interceptor;
+import com.predic8.membrane.core.interceptor.WSDLInterceptor;
 import com.predic8.membrane.core.interceptor.schemavalidation.ValidatorInterceptor;
-import com.predic8.membrane.core.rules.*;
+import com.predic8.membrane.core.rules.ServiceProxy;
+import com.predic8.membrane.core.rules.ServiceProxyKey;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.contentproviders.WSDLPortTableContentProvider;
-import com.predic8.plugin.membrane.labelproviders.*;
+import com.predic8.plugin.membrane.labelproviders.TableHeaderLabelProvider;
+import com.predic8.plugin.membrane.labelproviders.WSDLPortTableLabelProvider;
 import com.predic8.plugin.membrane.listeners.PortVerifyListener;
 import com.predic8.plugin.membrane.util.SWTUtil;
-import com.predic8.wsdl.*;
+import com.predic8.wsdl.Port;
+import com.predic8.wsdl.WSDLParser;
 
 
 public class WSDLProxyConfigurationPage extends AbstractProxyWizardPage {
@@ -250,7 +269,7 @@ public class WSDLProxyConfigurationPage extends AbstractProxyWizardPage {
 			interceptor.setPort(textRewriteWSDLPort.getText().trim());
 		
 		try {
-			interceptor.init(Router.getInstance());
+			interceptor.init(PlatformUtil.getRouter());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -261,7 +280,7 @@ public class WSDLProxyConfigurationPage extends AbstractProxyWizardPage {
 		ValidatorInterceptor interceptor = new ValidatorInterceptor();
 		interceptor.setWsdl(wsdl);
 		try {
-			interceptor.init(Router.getInstance());
+			interceptor.init(PlatformUtil.getRouter());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

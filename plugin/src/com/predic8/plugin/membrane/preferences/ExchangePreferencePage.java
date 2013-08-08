@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 public class ExchangePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -53,7 +53,7 @@ public class ExchangePreferencePage extends PreferencePage implements IWorkbench
 		comp.setLayout(new RowLayout(SWT.VERTICAL));
 		autoTrack = new Button(comp, SWT.CHECK);
 		autoTrack.setText("Autotrack New Exchanges");
-		autoTrack.setSelection(Router.getInstance().getConfigurationManager().getProxies().getTrackExchange());
+		autoTrack.setSelection(PlatformUtil.getRouter().getConfigurationManager().getProxies().getTrackExchange());
 
 		return comp;
 	}
@@ -64,9 +64,9 @@ public class ExchangePreferencePage extends PreferencePage implements IWorkbench
 
 	@Override
 	protected void performApply() {
-		Router.getInstance().getConfigurationManager().getProxies().setTrackExchange(autoTrack.getSelection());
+		PlatformUtil.getRouter().getConfigurationManager().getProxies().setTrackExchange(autoTrack.getSelection());
 		try {
-			Router.getInstance().getConfigurationManager().saveConfiguration(Router.getInstance().getConfigurationManager().getDefaultConfigurationFile());
+			PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(PlatformUtil.getRouter().getConfigurationManager().getDefaultConfigurationFile());
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());
@@ -75,9 +75,9 @@ public class ExchangePreferencePage extends PreferencePage implements IWorkbench
 
 	@Override
 	public boolean performOk() {
-		Router.getInstance().getConfigurationManager().getProxies().setTrackExchange(autoTrack.getSelection());
+		PlatformUtil.getRouter().getConfigurationManager().getProxies().setTrackExchange(autoTrack.getSelection());
 		try {
-			Router.getInstance().getConfigurationManager().saveConfiguration(Router.getInstance().getConfigurationManager().getDefaultConfigurationFile());
+			PlatformUtil.getRouter().getConfigurationManager().saveConfiguration(PlatformUtil.getRouter().getConfigurationManager().getDefaultConfigurationFile());
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", "Unable to save configuration: " + e.getMessage());

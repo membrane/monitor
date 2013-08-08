@@ -18,8 +18,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.exchange.AbstractExchange;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 public class RemoveExchangeAction extends Action {
 
@@ -38,7 +38,7 @@ public class RemoveExchangeAction extends Action {
 		if (selectedItem instanceof AbstractExchange) {
 			AbstractExchange selectedExchange = (AbstractExchange) selectedItem;
 			selectedExchange.finishExchange(false);// Don't need to refresh.
-			Router.getInstance().getExchangeStore().remove(selectedExchange);
+			PlatformUtil.getRouter().getExchangeStore().remove(selectedExchange);
 			tableViewer.setSelection(null);
 			return;
 		}

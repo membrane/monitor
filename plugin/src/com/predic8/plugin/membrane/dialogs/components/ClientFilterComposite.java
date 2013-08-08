@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.exchange.AbstractExchange;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.filtering.ClientFilter;
 import com.predic8.plugin.membrane.filtering.ExchangesFilter;
 
@@ -37,7 +37,7 @@ public class ClientFilterComposite extends AbstractFilterComposite {
 	
 	
 	protected void initializeButtons(Composite rulesComposite) {
-		Object[] excanges = Router.getInstance().getExchangeStore().getAllExchanges();
+		Object[] excanges = PlatformUtil.getRouter().getExchangeStore().getAllExchanges();
 		Set<String> clients = new HashSet<String>();
 		if (excanges != null && excanges.length > 0) {
 			for (Object object : excanges) {

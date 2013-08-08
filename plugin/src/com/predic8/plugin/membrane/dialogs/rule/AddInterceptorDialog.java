@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.interceptor.Interceptor;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.dialogs.rule.composites.ProxyInterceptorTabComposite;
 import com.predic8.plugin.membrane.dialogs.rule.providers.AddInterceptorTableViewerContentProvider;
 import com.predic8.plugin.membrane.dialogs.rule.providers.AddInterceptorTableViewerLabelProvider;
@@ -79,7 +79,7 @@ public class AddInterceptorDialog extends Dialog {
 		
 		tableViewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 		
-		tableViewer.setInput(Router.getInstance().getInterceptors());
+		tableViewer.setInput(PlatformUtil.getRouter().getTransport().getInterceptors());
 		return tableViewer;
 	}
 

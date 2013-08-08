@@ -16,10 +16,10 @@ package com.predic8.plugin.membrane.viewcomponents;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.exchange.AbstractExchange;
 import com.predic8.membrane.core.transport.http.HttpResendHandler;
 import com.predic8.membrane.core.transport.http.HttpTransport;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 
 public class RequestComp extends BaseComp {
@@ -45,7 +45,7 @@ public class RequestComp extends BaseComp {
 	}
 
 	private HttpTransport getTransport() {
-		return (HttpTransport)Router.getInstance().getTransport();
+		return (HttpTransport)PlatformUtil.getRouter().getTransport();
 	}
 	
 	@Override

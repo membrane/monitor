@@ -46,14 +46,13 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
-import com.predic8.membrane.core.Proxies;
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.exchange.AbstractExchange;
 import com.predic8.membrane.core.exchange.Exchange;
 import com.predic8.membrane.core.exchange.ExchangeComparator;
 import com.predic8.membrane.core.exchange.ExchangeState;
 import com.predic8.membrane.core.model.IExchangesStoreListener;
 import com.predic8.membrane.core.rules.Rule;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.PluginUtil;
 import com.predic8.plugin.membrane.actions.ShowFiltersDialogAction;
 import com.predic8.plugin.membrane.actions.ShowSortersDialogAction;
@@ -133,7 +132,7 @@ public class ExchangesView extends TableViewPart implements IExchangesStoreListe
 
 		createTrackRequestButton(createInnerComposite(composite, 1));
 
-		Router.getInstance().getExchangeStore().addExchangesStoreListener(this);
+		PlatformUtil.getRouter().getExchangeStore().addExchangesStoreListener(this);
 		refreshTable(false);
 
 		contributeToActionBars();
@@ -349,7 +348,7 @@ public class ExchangesView extends TableViewPart implements IExchangesStoreListe
 
 				}
 
-				List<AbstractExchange> exchanges = applyFilter(Router.getInstance().getExchangeStore().getAllExchangesAsList());
+				List<AbstractExchange> exchanges = applyFilter(PlatformUtil.getRouter().getExchangeStore().getAllExchangesAsList());
 				applySorter(exchanges);
 				
 				if (!lbFilterCount.isDisposed()) {
@@ -455,7 +454,7 @@ public class ExchangesView extends TableViewPart implements IExchangesStoreListe
 	}
 
 	private Proxies getConfiguration() {
-		return Router.getInstance().getConfigurationManager().getProxies();
+		return PlatformUtil.getRouter().getConfigurationManager().getProxies();
 	}
 
 	

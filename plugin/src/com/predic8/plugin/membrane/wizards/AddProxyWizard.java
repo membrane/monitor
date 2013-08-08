@@ -20,11 +20,11 @@ import java.io.IOException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.rules.ServiceProxy;
 import com.predic8.membrane.core.rules.ServiceProxyKey;
 import com.predic8.membrane.core.transport.http.HttpTransport;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 public class AddProxyWizard extends Wizard {
 
@@ -122,11 +122,11 @@ public class AddProxyWizard extends Wizard {
 	}
 	
 	protected RuleManager getRuleManager() {
-		return Router.getInstance().getRuleManager();
+		return PlatformUtil.getRouter().getRuleManager();
 	}
 
 	protected HttpTransport getHttpTransport() {
-		return ((HttpTransport) Router.getInstance().getTransport());
+		return ((HttpTransport) PlatformUtil.getRouter().getTransport());
 	}
 	
 	void addProxy() throws IOException {

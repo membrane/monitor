@@ -15,14 +15,23 @@
 package com.predic8.plugin.membrane.components;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
-import com.predic8.membrane.core.Router;
-import com.predic8.membrane.core.rules.ServiceProxyKey;
 import com.predic8.membrane.core.rules.RuleKey;
+import com.predic8.membrane.core.rules.ServiceProxyKey;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.listeners.PortVerifyListener;
 import com.predic8.plugin.membrane.util.SWTUtil;
 
@@ -186,7 +195,7 @@ public class RuleKeyGroup {
 	private Text createRulePathText(Group keyGroup) {
 		Text text = new Text(keyGroup, SWT.BORDER);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		text.setText(Router.getInstance().getRuleManager().getDefaultPath());
+		text.setText(PlatformUtil.getRouter().getRuleManager().getDefaultPath());
 		text.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -209,7 +218,7 @@ public class RuleKeyGroup {
 		GridData gData = new GridData();
 		gData.widthHint = 100;
 		combo.setLayoutData(gData);
-		combo.select(Router.getInstance().getRuleManager().getDefaultMethod());
+		combo.select(PlatformUtil.getRouter().getRuleManager().getDefaultMethod());
 		combo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -222,7 +231,7 @@ public class RuleKeyGroup {
 
 	private Text createListenPortText(Group keyGroup) {
 		Text text = new Text(keyGroup, SWT.BORDER);
-		text.setText(""+ Router.getInstance().getRuleManager().getDefaultListenPort());
+		text.setText(""+ PlatformUtil.getRouter().getRuleManager().getDefaultListenPort());
 		text.addVerifyListener(new PortVerifyListener());
 		text.addModifyListener(new ModifyListener() {	
 			@Override
@@ -248,7 +257,7 @@ public class RuleKeyGroup {
 	private Text createRuleHostText(Group keyGroup) {
 		Text text = new Text(keyGroup, SWT.BORDER);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		text.setText(Router.getInstance().getRuleManager().getDefaultHost());
+		text.setText(PlatformUtil.getRouter().getRuleManager().getDefaultHost());
 		text.addModifyListener(new ModifyListener() {	
 			@Override
 			public void modifyText(ModifyEvent e) {

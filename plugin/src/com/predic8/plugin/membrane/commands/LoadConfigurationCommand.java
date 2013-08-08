@@ -21,7 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 
-import com.predic8.membrane.core.Router;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 
 public class LoadConfigurationCommand extends AbstractHandler {
@@ -39,7 +39,7 @@ public class LoadConfigurationCommand extends AbstractHandler {
 			return null;
 
 		try {
-			Router.getInstance().getConfigurationManager().loadConfiguration(selected);
+			PlatformUtil.getRouter().getConfigurationManager().loadConfiguration(selected);
 		} catch (Exception e) {
 			MessageDialog.openError(Display.getDefault().getActiveShell(), "Load Configuration Error", e.getMessage());
 		}

@@ -5,10 +5,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.rules.Rule;
-import com.predic8.plugin.membrane.actions.rules.RemoveProxyAction;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.actions.rules.EditProxyAction;
+import com.predic8.plugin.membrane.actions.rules.RemoveProxyAction;
 import com.predic8.plugin.membrane.wizards.AddProxyWizard;
 
 public class ProxiesViewControlsComposite extends ControlsComposite {
@@ -47,12 +47,12 @@ public class ProxiesViewControlsComposite extends ControlsComposite {
 
 	@Override
 	public void upButtonPressed() {
-		Router.getInstance().getRuleManager().ruleUp(selectedProxy);
+		PlatformUtil.getRouter().getRuleManager().ruleUp(selectedProxy);
 	}
 	
 	@Override
 	public void downButtonPressed() {
-		Router.getInstance().getRuleManager().ruleDown(selectedProxy);
+		PlatformUtil.getRouter().getRuleManager().ruleDown(selectedProxy);
 	}
 
 	public void setSelectedProxy(Rule selectedRule) {

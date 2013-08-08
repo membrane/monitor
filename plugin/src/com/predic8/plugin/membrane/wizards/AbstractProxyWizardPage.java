@@ -4,11 +4,14 @@ import java.io.IOException;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
-import com.predic8.membrane.core.*;
+import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.transport.http.HttpTransport;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.util.SWTUtil;
 
 public abstract class AbstractProxyWizardPage extends WizardPage {
@@ -26,11 +29,11 @@ public abstract class AbstractProxyWizardPage extends WizardPage {
 	}
 	
 	protected HttpTransport getHttpTransport() {
-		return ((HttpTransport) Router.getInstance().getTransport());
+		return ((HttpTransport) PlatformUtil.getRouter().getTransport());
 	}
 
 	protected RuleManager getRuleManager() {
-		return Router.getInstance().getRuleManager();
+		return PlatformUtil.getRouter().getRuleManager();
 	}
 	
 	protected Composite createComposite(Composite parent, int columns) {

@@ -17,11 +17,15 @@ package com.predic8.plugin.membrane.components;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
-import com.predic8.membrane.core.Router;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.listeners.PortVerifyListener;
 import com.predic8.plugin.membrane.util.SWTUtil;
 
@@ -78,7 +82,7 @@ public class ServiceProxyTargetGroup {
 	
 	private Text createTargetHostText(Group group) {
 		Text text = new Text(group, SWT.BORDER);
-		text.setText(Router.getInstance().getRuleManager().getDefaultTargetHost());
+		text.setText(PlatformUtil.getRouter().getRuleManager().getDefaultTargetHost());
 		text.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -98,7 +102,7 @@ public class ServiceProxyTargetGroup {
 
 	private Text createTargetPortText(Group group) {
 		Text text = new Text(group,SWT.BORDER);
-		text.setText("" + Router.getInstance().getRuleManager().getDefaultTargetPort());
+		text.setText("" + PlatformUtil.getRouter().getRuleManager().getDefaultTargetPort());
 		text.addVerifyListener(new PortVerifyListener());
 		text.addModifyListener(new ModifyListener() {
 			@Override

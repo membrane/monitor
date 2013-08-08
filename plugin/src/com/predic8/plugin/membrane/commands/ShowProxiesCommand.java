@@ -17,7 +17,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import com.predic8.membrane.core.Router;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.PluginUtil;
 import com.predic8.plugin.membrane.views.ProxiesView;
 
@@ -26,7 +26,7 @@ public class ShowProxiesCommand extends AbstractHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ProxiesView proxiesView = (ProxiesView)PluginUtil.showView(ProxiesView.VIEW_ID);
-		proxiesView.setInputForTable(Router.getInstance().getRuleManager());
+		proxiesView.setInputForTable(PlatformUtil.getRouter().getRuleManager());
 		
 		return null;
 	}

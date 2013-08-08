@@ -21,8 +21,8 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.transport.http.HttpTransport;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.components.RuleKeyGroup;
 
 public class AdvancedProxyConfigurationPage extends AbstractProxyWizardPage {
@@ -87,7 +87,7 @@ public class AdvancedProxyConfigurationPage extends AbstractProxyWizardPage {
 	}
 	
 	private HttpTransport getTransport() {
-		return ((HttpTransport) Router.getInstance().getTransport());
+		return ((HttpTransport) PlatformUtil.getRouter().getTransport());
 	}
 
 	public boolean getUsePathPatter() {

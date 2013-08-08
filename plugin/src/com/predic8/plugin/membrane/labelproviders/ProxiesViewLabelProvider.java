@@ -22,11 +22,11 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.membrane.core.rules.ServiceProxy;
 import com.predic8.membrane.core.rules.StatisticCollector;
 import com.predic8.plugin.membrane.MembraneUIPlugin;
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.resources.ImageKeys;
 
 
@@ -56,7 +56,7 @@ public class ProxiesViewLabelProvider extends LabelProvider implements ITableLab
 	public String getColumnText(Object element, int columnIndex) {
 		Rule rule = (Rule)element;
 		
-		StatisticCollector statistics = Router.getInstance().getExchangeStore().getStatistics(rule.getKey());
+		StatisticCollector statistics = PlatformUtil.getRouter().getExchangeStore().getStatistics(rule.getKey());
 		
 		switch (columnIndex) {
 		case 0:

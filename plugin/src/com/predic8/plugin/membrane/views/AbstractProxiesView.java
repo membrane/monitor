@@ -16,12 +16,12 @@ package com.predic8.plugin.membrane.views;
 
 import org.eclipse.swt.widgets.Display;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.exchange.AbstractExchange;
 import com.predic8.membrane.core.model.IExchangesStoreListener;
 import com.predic8.membrane.core.model.IRuleChangeListener;
 import com.predic8.membrane.core.rules.Rule;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 public abstract class AbstractProxiesView extends TableViewPart implements IExchangesStoreListener, IRuleChangeListener {
 
@@ -70,7 +70,7 @@ public abstract class AbstractProxiesView extends TableViewPart implements IExch
 				if (tableViewer.getTable() == null || tableViewer.getTable().isDisposed())
 					return;
 				
-				tableViewer.setInput(Router.getInstance().getRuleManager());
+				tableViewer.setInput(PlatformUtil.getRouter().getRuleManager());
 			}
 		});
 

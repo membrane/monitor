@@ -20,9 +20,9 @@ import java.net.ServerSocket;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.widgets.Composite;
 
-import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.rules.ServiceProxyKey;
 import com.predic8.membrane.core.transport.http.HttpTransport;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 public class ListenPortConfigurationPage extends AbstractPortConfigurationPage {
 
@@ -51,7 +51,7 @@ public class ListenPortConfigurationPage extends AbstractPortConfigurationPage {
 		if (!isPageComplete())
 			return false;
 		try {
-			if (((HttpTransport) Router.getInstance().getTransport()).isAnyThreadListeningAt(null, Integer.parseInt(listenPortText.getText()))) {
+			if (((HttpTransport) PlatformUtil.getRouter().getTransport()).isAnyThreadListeningAt(null, Integer.parseInt(listenPortText.getText()))) {
 				return true;
 			}
 			new ServerSocket(Integer.parseInt(listenPortText.getText())).close();
@@ -73,7 +73,7 @@ public class ListenPortConfigurationPage extends AbstractPortConfigurationPage {
 	protected boolean performFinish(AddProxyWizard wizard) throws IOException {
 		ServiceProxyKey ruleKey = new ServiceProxyKey("*", "*", ".*", getListenPort());
 		
-		if (Router.getInstance().getRuleManager().exists(ruleKey)) {
+		if (PlatformUtil.getRouter().getRuleManager().exists(ruleKey)) {
 			wizard.openWarningDialog("You've entered a duplicated rule key.");
 			return false;
 		}
