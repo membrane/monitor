@@ -15,6 +15,10 @@ package com.predic8.plugin.membrane;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+
 import com.predic8.membrane.annot.bean.MCUtil;
 import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.interceptor.HTTPClientInterceptor;
@@ -22,21 +26,26 @@ import com.predic8.membrane.core.interceptor.Interceptor;
 
 public class PlatformUtil {
 	public static Router getRouter() {
-		// TODO: ask com.predic8.membrane.osgi plugin for router instance 
-		return null;
+		// TODO: ask com.predic8.membrane.osgi plugin for router instance
+		BundleContext context = Platform.getBundle("com.predic8.membrane.osgi").getBundleContext();
+		ServiceReference<?> serviceReference = context.getServiceReference(Router.class.getName());
+		Object o = context.getService(serviceReference);
+		return (Router)o;
 	}
 
 	public static void loadConfiguration(String selected) {
 		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("no op");
 	}
 
 	public static void saveConfiguration() {
 		// TODO: save spring config to file it was loaded from
+		throw new RuntimeException("no op");
 	}
 
-	public static void saveConfiguration(String selected) {
+	public static void saveConfiguration(String fileName) {
 		// TODO Auto-generated method stub
+		throw new RuntimeException("no op");
 	}
 
 	// TODO: persist these fields in config?
