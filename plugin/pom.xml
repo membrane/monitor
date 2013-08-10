@@ -19,7 +19,7 @@
     <packaging>eclipse-plugin</packaging>
 
     <parent>
-        <groupId>com.predic8</groupId>
+        <groupId>org.membrane-soa.service-proxy</groupId>
         <artifactId>membrane-monitor</artifactId>
         <relativePath>../pom.xml</relativePath>
         <version>4.0.9</version>
@@ -27,7 +27,7 @@
     
 	<dependencies>
 		<dependency>
-			<groupId>com.predic8</groupId>
+			<groupId>org.membrane-soa.service-proxy</groupId>
 			<artifactId>com.predic8.membrane.osgi</artifactId>
 		</dependency>
 		<dependency>
