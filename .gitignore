@@ -3,6 +3,12 @@
 /.settings
 /workspace
 
+# /feature/
+/feature/.classpath
+/feature/.project
+/feature/.settings
+/feature/target
+
 # /plugin/
 /plugin/.classpath
 /plugin/.project

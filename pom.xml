@@ -52,6 +52,7 @@
 		<module>plugin</module>
 		<module>plugin-test</module>
 		<module>rcp</module>
+		<module>feature</module>
 		<module>repository</module>
 	</modules>
 
