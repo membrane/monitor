@@ -9,9 +9,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.predic8.membrane.core.RuleManager;
-import com.predic8.membrane.core.transport.http.HttpTransport;
-import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.util.SWTUtil;
 
 public abstract class AbstractProxyWizardPage extends WizardPage {

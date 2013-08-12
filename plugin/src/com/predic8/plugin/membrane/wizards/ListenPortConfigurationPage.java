@@ -21,7 +21,6 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.widgets.Composite;
 
 import com.predic8.membrane.core.rules.ServiceProxyKey;
-import com.predic8.membrane.core.transport.http.HttpTransport;
 import com.predic8.plugin.membrane.PlatformUtil;
 
 public class ListenPortConfigurationPage extends AbstractPortConfigurationPage {
