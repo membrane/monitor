@@ -20,10 +20,10 @@ import java.io.IOException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
 
+import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.rules.ServiceProxy;
 import com.predic8.membrane.core.rules.ServiceProxyKey;
-import com.predic8.membrane.core.transport.http.HttpTransport;
 import com.predic8.plugin.membrane.PlatformUtil;
 
 public class AddProxyWizard extends Wizard {
@@ -70,7 +70,14 @@ public class AddProxyWizard extends Wizard {
 		rule.setTargetPort(Integer.parseInt(targetHostConfigPage.getTargetPort()));
 		rule.setKey(ruleKey);
 		
-		getRuleManager().addProxyAndOpenPortIfNew(rule);
+		Router router = PlatformUtil.getRouter();
+		try {
+			rule.init(router);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		RuleManager ruleManager = router.getRuleManager();
+		ruleManager.addProxyAndOpenPortIfNew(rule);
 	}
 
 	@Override
@@ -114,19 +121,11 @@ public class AddProxyWizard extends Wizard {
 	}
 
 	boolean checkIfSimilarRuleExists() {
-		if (getRuleManager().exists(getRuleKey())) {
+		if (PlatformUtil.getRouter().getRuleManager().exists(getRuleKey())) {
 			openWarningDialog("You've entered a duplicated rule key.");
 			return true;
 		}
 		return false;
-	}
-	
-	protected RuleManager getRuleManager() {
-		return PlatformUtil.getRouter().getRuleManager();
-	}
-
-	protected HttpTransport getHttpTransport() {
-		return ((HttpTransport) PlatformUtil.getRouter().getTransport());
 	}
 	
 	void addProxy() throws IOException {

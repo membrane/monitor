@@ -19,7 +19,10 @@ import java.io.IOException;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.widgets.Composite;
 
+import com.predic8.membrane.core.Router;
+import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.rules.*;
+import com.predic8.plugin.membrane.PlatformUtil;
 
 public class ProxyRuleConfigurationPage extends AbstractPortConfigurationPage {
 
@@ -56,12 +59,20 @@ public class ProxyRuleConfigurationPage extends AbstractPortConfigurationPage {
 	@Override
 	boolean performFinish(AddProxyWizard wizard) throws IOException {
 		ProxyRuleKey key = new ProxyRuleKey(getListenPort());
-		if (getRuleManager().exists(key)) {
+		Router router = PlatformUtil.getRouter();
+		RuleManager ruleManager = router.getRuleManager();
+		if (ruleManager.exists(key)) {
 			wizard.openWarningDialog("You've entered a duplicated rule key.");
 			return false;
 		}
 
-		getRuleManager().addProxyAndOpenPortIfNew(new ProxyRule(key));
+		ProxyRule rule = new ProxyRule(key);
+		try {
+			rule.init(router);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		ruleManager.addProxyAndOpenPortIfNew(rule);
 		return true;
 	}
 

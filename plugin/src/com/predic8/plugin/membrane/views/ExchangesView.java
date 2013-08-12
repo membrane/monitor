@@ -282,7 +282,7 @@ public class ExchangesView extends TableViewPart implements IExchangesStoreListe
 	}
 
 	public void addExchange(Rule rule, final AbstractExchange exchange) {
-		
+		refreshTable(false);
 	}
 
 	public void refresh() {
@@ -339,7 +339,6 @@ public class ExchangesView extends TableViewPart implements IExchangesStoreListe
 	}
 
 	public void refreshTable(final boolean clear) {
-
 		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {

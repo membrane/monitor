@@ -15,7 +15,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 					    http://membrane-soa.org/proxies/1/ http://membrane-soa.org/schemas/proxies-1.xsd">
 
-	<router hotDeploy="false" />
+
+	<memoryExchangeStore id="memoryExchangeStore" />
+						
+	<router hotDeploy="false" exchangeStore="memoryExchangeStore" />
 
 	<spring:bean id="JSONBeautifier" class="com.predic8.membrane.core.beautifier.JSONBeautifier" init-method="configure">
 		<spring:property name="indentOutput" value="true"/>

@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.predic8.membrane.core.exchange.AbstractExchange;
-import com.predic8.membrane.core.exchangestore.ExchangeStore;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.contentproviders.ProxyStatisticsContentProvider;
@@ -52,7 +51,7 @@ public class ProxyStatisticsView extends AbstractProxiesView {
 		
 		new Label(composite, SWT.NONE).setText(" All times in ms");
 					
-	    getExchangeStore().addExchangesStoreListener(this);
+	    PlatformUtil.getRouter().getExchangeStore().addExchangesStoreListener(this);
 	    setInputForTable(PlatformUtil.getRouter().getRuleManager());
 	}
 
@@ -93,11 +92,6 @@ public class ProxyStatisticsView extends AbstractProxiesView {
 				 setInputForTable(PlatformUtil.getRouter().getRuleManager());
 			}
 		});
-	}
-
-
-	private ExchangeStore getExchangeStore() {
-		return PlatformUtil.getRouter().getExchangeStore();
 	}
 
 	@Override

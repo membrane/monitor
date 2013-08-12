@@ -5,6 +5,7 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.*;
 
+import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.listeners.PortVerifyListener;
 
 public abstract class AbstractPortConfigurationPage extends AbstractProxyWizardPage {
@@ -19,7 +20,7 @@ public abstract class AbstractPortConfigurationPage extends AbstractProxyWizardP
 		Text text = new Text(parent, SWT.BORDER);
 		text.addVerifyListener(new PortVerifyListener());
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		text.setText("" + getRuleManager().getDefaultListenPort());
+		text.setText("" + PlatformUtil.getRouter().getRuleManager().getDefaultListenPort());
 		text.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {

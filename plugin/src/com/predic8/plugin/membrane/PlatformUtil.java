@@ -23,10 +23,10 @@ import com.predic8.membrane.annot.bean.MCUtil;
 import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.interceptor.HTTPClientInterceptor;
 import com.predic8.membrane.core.interceptor.Interceptor;
+import com.predic8.membrane.core.transport.http.HttpTransport;
 
 public class PlatformUtil {
 	public static Router getRouter() {
-		// TODO: ask com.predic8.membrane.osgi plugin for router instance
 		BundleContext context = Platform.getBundle("com.predic8.membrane.osgi").getBundleContext();
 		ServiceReference<?> serviceReference = context.getServiceReference(Router.class.getName());
 		Object o = context.getService(serviceReference);
@@ -97,6 +97,10 @@ public class PlatformUtil {
 		
 		hci.setAdjustHostHeader(adjustHostHeader);
 		interceptors.set(httpClientInterceptorIndex, hci);
+	}
+
+	public static HttpTransport getTransport() {
+		return ((HttpTransport) PlatformUtil.getRouter().getTransport());
 	}
 
 }

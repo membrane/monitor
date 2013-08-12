@@ -144,12 +144,10 @@ public abstract class AbstractProxyConfigurationEditDialog extends Dialog {
 	}
 	
 	private void replaceRule(Rule oldRule, Rule newRule) throws Exception {
-		getRuleManager().removeRule(oldRule);
-		getRuleManager().addProxyAndOpenPortIfNew(newRule);
-	}
-	
-	protected RuleManager getRuleManager() {
-		return PlatformUtil.getRouter().getRuleManager();
+		newRule.init(PlatformUtil.getRouter());
+		RuleManager ruleManager = PlatformUtil.getRouter().getRuleManager();
+		ruleManager.replaceRule(oldRule, newRule);
+		ruleManager.openPorts();
 	}
 	
 	protected void createFeaturesTab(Composite composite) {

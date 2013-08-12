@@ -44,6 +44,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
+import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.exchange.AbstractExchange;
 import com.predic8.membrane.core.rules.Rule;
@@ -83,9 +84,11 @@ public class ProxiesView extends AbstractProxiesView {
 		createActions();
 		addTableMenu();
 		
-		PlatformUtil.getRouter().getExchangeStore().addExchangesStoreListener(this);
-		PlatformUtil.getRouter().getRuleManager().addRuleChangeListener(this);
-		setInputForTable(PlatformUtil.getRouter().getRuleManager());
+		Router router = PlatformUtil.getRouter();
+		router.getExchangeStore().addExchangesStoreListener(this);
+		RuleManager ruleManager = router.getRuleManager();
+		ruleManager.addRuleChangeListener(this);
+		setInputForTable(ruleManager);
 	}
 	
 	

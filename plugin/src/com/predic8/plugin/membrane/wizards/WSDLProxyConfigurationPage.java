@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.predic8.membrane.core.Constants;
+import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.interceptor.Interceptor;
 import com.predic8.membrane.core.interceptor.WSDLInterceptor;
 import com.predic8.membrane.core.interceptor.schemavalidation.ValidatorInterceptor;
@@ -229,7 +230,14 @@ public class WSDLProxyConfigurationPage extends AbstractProxyWizardPage {
 	@Override
 	boolean performFinish(AddProxyWizard wizard) throws IOException {
 		Port p = (Port)tableViewer.getCheckedElements()[0];
-		getRuleManager().addProxyAndOpenPortIfNew(createServiceProxy(p));
+		Router router = PlatformUtil.getRouter();
+		ServiceProxy serviceProxy = createServiceProxy(p);
+		try {
+			serviceProxy.init(router);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		router.getRuleManager().addProxyAndOpenPortIfNew(serviceProxy);
 		return true;
 	}
 	

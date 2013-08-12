@@ -51,7 +51,7 @@ public class ListenPortConfigurationPage extends AbstractPortConfigurationPage {
 		if (!isPageComplete())
 			return false;
 		try {
-			if (((HttpTransport) PlatformUtil.getRouter().getTransport()).isAnyThreadListeningAt(null, Integer.parseInt(listenPortText.getText()))) {
+			if (PlatformUtil.getTransport().isAnyThreadListeningAt(null, Integer.parseInt(listenPortText.getText()))) {
 				return true;
 			}
 			new ServerSocket(Integer.parseInt(listenPortText.getText())).close();

@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import com.predic8.membrane.annot.bean.MCUtil;
+import com.predic8.membrane.core.Router;
 import com.predic8.membrane.core.RuleManager;
 import com.predic8.membrane.core.rules.Rule;
 import com.predic8.plugin.membrane.PlatformUtil;
@@ -148,12 +149,11 @@ public abstract class AbstractProxyEditDialog extends Dialog {
 	}
 	
 	private void replaceRule() throws Exception {
-		getRuleManager().removeRule(originalRule);
-		getRuleManager().addProxyAndOpenPortIfNew(workingCopy);
-	}
-	
-	protected RuleManager getRuleManager() {
-		return PlatformUtil.getRouter().getRuleManager();
+		Router router = PlatformUtil.getRouter();
+		RuleManager ruleManager = router.getRuleManager();
+		workingCopy.init(router);
+		ruleManager.replaceRule(originalRule, workingCopy);
+		ruleManager.openPorts();
 	}
 	
 	private boolean isRuleChanged() {

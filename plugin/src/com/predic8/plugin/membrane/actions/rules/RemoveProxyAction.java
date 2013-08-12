@@ -17,7 +17,6 @@ package com.predic8.plugin.membrane.actions.rules;
 import java.io.IOException;
 
 import com.predic8.membrane.core.RuleManager;
-import com.predic8.membrane.core.transport.http.HttpTransport;
 import com.predic8.plugin.membrane.PlatformUtil;
 
 public class RemoveProxyAction extends AbstractProxyAction {
@@ -28,23 +27,16 @@ public class RemoveProxyAction extends AbstractProxyAction {
 
 	@Override
 	public void run() {
-		getRuleManager().removeRule(selectedProxy);
-		if (getRuleManager().isAnyRuleWithPort(selectedProxy.getKey().getPort()))
+		RuleManager ruleManager = PlatformUtil.getRouter().getRuleManager();
+		ruleManager.removeRule(selectedProxy);
+		if (ruleManager.isAnyRuleWithPort(selectedProxy.getKey().getPort()))
 			return;
 
 		try {
-			getHttpTransport().closePort(selectedProxy.getKey().getIp(), selectedProxy.getKey().getPort());
+			PlatformUtil.getTransport().closePort(selectedProxy.getKey().getIp(), selectedProxy.getKey().getPort());
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
-	}
-
-	private RuleManager getRuleManager() {
-		return PlatformUtil.getRouter().getRuleManager();
-	}
-
-	private HttpTransport getHttpTransport() {
-		return ((HttpTransport) PlatformUtil.getRouter().getTransport());
 	}
 
 }

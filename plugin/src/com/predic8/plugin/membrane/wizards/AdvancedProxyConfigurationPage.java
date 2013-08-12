@@ -21,7 +21,6 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import com.predic8.membrane.core.transport.http.HttpTransport;
 import com.predic8.plugin.membrane.PlatformUtil;
 import com.predic8.plugin.membrane.components.RuleKeyGroup;
 
@@ -75,7 +74,7 @@ public class AdvancedProxyConfigurationPage extends AbstractProxyWizardPage {
 		if (!isPageComplete())
 			return false;
 		try {
-			if (getTransport().isAnyThreadListeningAt(null, Integer.parseInt(ruleKeyGroup.getTextListenPort().getText()))) {
+			if (PlatformUtil.getTransport().isAnyThreadListeningAt(null, Integer.parseInt(ruleKeyGroup.getTextListenPort().getText()))) {
 				return true;
 			}
 			new ServerSocket(Integer.parseInt(ruleKeyGroup.getTextListenPort().getText())).close();
@@ -86,10 +85,6 @@ public class AdvancedProxyConfigurationPage extends AbstractProxyWizardPage {
 		} 
 	}
 	
-	private HttpTransport getTransport() {
-		return ((HttpTransport) PlatformUtil.getRouter().getTransport());
-	}
-
 	public boolean getUsePathPatter() {
 		return ruleKeyGroup.getBtPathPattern().getSelection();
 	}

@@ -27,15 +27,7 @@ public abstract class AbstractProxyWizardPage extends WizardPage {
 	boolean performFinish(AddProxyWizard wizard) throws IOException {
 		return true;
 	}
-	
-	protected HttpTransport getHttpTransport() {
-		return ((HttpTransport) PlatformUtil.getRouter().getTransport());
-	}
 
-	protected RuleManager getRuleManager() {
-		return PlatformUtil.getRouter().getRuleManager();
-	}
-	
 	protected Composite createComposite(Composite parent, int columns) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = SWTUtil.createGridLayout(columns, 10, 2, 10, 10);
