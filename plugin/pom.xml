@@ -31,6 +31,10 @@
 			<artifactId>com.predic8.membrane.osgi</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.membrane-soa.service-proxy</groupId>
+			<artifactId>service-proxy-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.5</version>

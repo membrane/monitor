@@ -76,6 +76,11 @@
 				<artifactId>com.predic8.plugin.membrane</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.membrane-soa.service-proxy</groupId>
+				<artifactId>service-proxy-core</artifactId>
+				<version>4.0.13-SNAPSHOT</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
